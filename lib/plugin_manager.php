@@ -8,14 +8,8 @@
  */
 class Orbisius_SEO_Editor_Plugin_Manager {
 	var $supported_seo_plugins = [
-		// 		'Yoast SEO Premium' => 'wordpress-seo-premium/wp-seo-premium.php',??
 		'wp_seo' => [
 			'title' => 'Yoast SEO Plugin',
-			'supported' => true,
-		],
-
-		'seopress' => [
-			'title' => 'SEOPress',
 			'supported' => true,
 		],
 
@@ -33,93 +27,6 @@ class Orbisius_SEO_Editor_Plugin_Manager {
 			'title' => 'The SEO Framework',
 			'supported' => true,
 		],
-
-		'squirrly' => [
-			'title' => 'SEO Plugin by Squirrly SEO',
-			'supported' => false, // This doesn't save the data ?!?
-		],
-
-		'seo_ultimate' => [
-			'title' => 'SEO Ultimate',
-			'supported' => true,
-		],
-
-		'seopressor' => [
-			'title' => 'SEOPressor',
-			'supported' => true,
-		],
-
-		'seo_title_tag' => [
-			'title' => 'SEO Title Tag',
-			'supported' => true,
-		],
-
-		'genesis' => [
-			'title' => 'Genesis',
-			'theme' => true,
-			'supported' => true,
-		],
-
-		'add_meta_tags' => [
-			'title' => 'Add Meta Tags',
-			'supported' => true,
-		],
-
-		'platinum_seo_pack' => [
-			'title' => 'Platinum SEO Pack',
-			'supported' => true,
-		],
-
-		// outdated wordpress.org/plugins/headspace2/
-		'headspace2' => [
-			'title' => 'HeadSpace2 SEO',
-			'supported' => true,
-		],
-
-		// Themes
-		'builder' => [
-			'title' => 'Builder Theme',
-			'theme' => true,
-			'supported' => true,
-		],
-
-		'catalyst' => [
-			'title' => 'Catalyst Theme',
-			'theme' => true,
-			'supported' => true,
-		],
-
-		'frugal' => [
-			'title' => 'Frugal Theme',
-			'theme' => true,
-			'supported' => true,
-		],
-
-		'headway' => [
-			'title' => 'Headway Theme',
-			'theme' => true,
-			'supported' => true,
-		],
-
-		'thesis' => [
-			'title' => 'Thesis Theme',
-			'theme' => true,
-			'supported' => true,
-		],
-
-		'wooframework' => [
-			'title' => 'Woo Framework',
-			'supported' => true,
-		],
-
-		// /wp-admin/admin.php?page=et_divi_options
-		// asadbadat.co.za/divi-seo/divi-meta-description/
-		'divi' => [
-			'title' => 'Divi Theme',
-			'theme' => true,
-			'supported' => true,
-		],
-
 	];
 
 	const FORMAT_RECORDS = 'records';
