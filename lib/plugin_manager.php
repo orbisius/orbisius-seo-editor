@@ -701,7 +701,9 @@ class Orbisius_SEO_Editor_Plugin_Manager {
 	 * @return string[]
 	 */
 	public function getSupportedSeoPlugins(): array {
-		return $this->supported_seo_plugins;
+		$supported_seo_plugins = $this->supported_seo_plugins;
+		$supported_seo_plugins = apply_filters('orbisius_seo_editor_filter_plugin_manager_supported_seo_plugins', $supported_seo_plugins);
+		return $supported_seo_plugins;
 	}
 
 	/**
