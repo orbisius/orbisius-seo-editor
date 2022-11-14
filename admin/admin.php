@@ -147,9 +147,6 @@ class Orbisius_SEO_Editor_Admin {
 	 * @return void
 	 */
 	function init() {
-		$dev = empty($_SERVER['DEV_ENV']) ? 0 : 1;
-		$suffix = $dev ? '' : '.min';
-
 		if (is_admin()) {
 			$plugin_manager_obj = Orbisius_SEO_Editor_Plugin_Manager::getInstance();
 			$search_items_params = $this->getSearchFilter();
@@ -248,6 +245,9 @@ class Orbisius_SEO_Editor_Admin {
 	 * @see https://statopt.com - for JS and CSS compression
 	 */
 	function enqueueAdminAssets() {
+		$dev = empty($_SERVER['DEV_ENV']) ? 0 : 1;
+		$suffix = $dev ? '' : '.min';
+
 		wp_enqueue_script( 'jquery' );
 
 		$file_rel = '/assets/main.js';
