@@ -259,27 +259,22 @@ class Orbisius_SEO_Editor_Admin {
 		);
 
         // Makes long dropdowns easily selectable
-        // Remotely hosted
-        $select2_ver = '4.1.0-rc.0';
-
-        // https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css
-		// https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js
-		// Add the Select2 CSS file
-        // https://daext.com/blog/how-to-add-select2-in-wordpress/
-		wp_enqueue_style(
-            'orbisius_seo_editor_select2_css',
-            "https://cdn.jsdelivr.net/npm/select2@$select2_ver/dist/css/select2.min.css",
-            [],
-			$select2_ver
-        );
-
-		// Add the Select2 JavaScript file
+		$file_rel = '/share/select2/4.1.0-rc.0/select2.min.js';
 		wp_enqueue_script(
-            'orbisius_seo_editor_select2_js',
-            "https://cdn.jsdelivr.net/npm/select2@$select2_ver/dist/js/select2.min.js",
-            [ 'jquery' ],
-			$select2_ver
-        );
+			'orbisius_seo_editor_shared_select2',
+			plugins_url( $file_rel, ORBISIUS_SEO_EDITOR_BASE_PLUGIN ),
+            array( 'jquery', ),
+			filemtime( plugin_dir_path( ORBISIUS_SEO_EDITOR_BASE_PLUGIN ) . $file_rel ),
+			true
+		);
+
+		$file_rel = '/share/select2/4.1.0-rc.0/select2.min.css';
+		wp_enqueue_style(
+			'orbisius_seo_editor_shared_select2',
+			plugins_url( $file_rel, ORBISIUS_SEO_EDITOR_BASE_PLUGIN ),
+			filemtime( plugin_dir_path( ORBISIUS_SEO_EDITOR_BASE_PLUGIN ) . $file_rel ),
+			true
+		);
     }
 
 	/**
