@@ -620,7 +620,9 @@ class Orbisius_SEO_Editor_Admin {
 			                                                $val = var_export($val, 1);
 		                                                }
 
-		                                                echo "$key: $val\n";
+		                                                $key_esc = esc_html($key);
+		                                                $val_esc = esc_html($val);
+		                                                echo "$key_esc: $val_esc\n";
 	                                                }
 	                                                ?></textarea>
 											</div>
@@ -635,8 +637,8 @@ class Orbisius_SEO_Editor_Admin {
 								<div class="inside">
                                     If you'd like more features and you should check the Pro version.
                                     It builds on top of the free version. It supports more SEO plugins, themes and more fields.
-                                    <a href="https://orbisius.com/store/product/orbisius-seo-editor-pro/?utm_source=<?php echo ORBISIUS_SEO_EDITOR_PLUGIN_SLUG;?>"
-                                       target="_blank">https://orbisius.com/store/product/orbisius-seo-editor-pro/</a>
+                                    <a href="<?php echo esc_url("https://orbisius.com/store/product/orbisius-seo-editor-pro/?utm_source=" . urlencode(ORBISIUS_SEO_EDITOR_PLUGIN_SLUG));?>"
+                                       target="_blank">Orbisius SEO Editor Pro</a>
                                     <br/>Use: <strong>seo-editor-pro-fan</strong> code to get 20% off
                                 </div> <!-- .inside -->
 							</div> <!-- .postbox -->
@@ -700,8 +702,7 @@ class Orbisius_SEO_Editor_Admin {
 									$product_descr_short = substr($product_descr, 0, 50) . '...';
 									$product_descr_short .= ' #WordPress #plugin';
 
-									$base_name_slug = basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
-									$base_name_slug = str_replace('.php', '', $base_name_slug);
+									$base_name_slug = ORBISIUS_SEO_EDITOR_PLUGIN_SLUG;
 									$product_page .= (strpos($product_page, '?') === false) ? '?' : '&';
 									$product_page .= "utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product";
 
@@ -721,16 +722,15 @@ class Orbisius_SEO_Editor_Admin {
 									<a href="https://twitter.com/share" class="twitter-share-button"
 									   data-lang="en" data-text="Checkout <?php echo $product_name;?> #WordPress #plugin.<?php echo $product_descr_short; ?>"
 									   data-count="none" data-via="orbisius" data-related="orbisius"
-									   data-url="<?php echo $product_page_tweet_link;?>">Tweet</a>
+									   data-url="<?php echo esc_url($product_page_tweet_link);?>">Tweet</a>
 									<!-- /Twitter: Tweet:js -->
 
 									<br/>
 									<span>
-                                        <a href="<?php echo $product_page; ?>" target="_blank" title="[new window]">Product Page</a>
+                                        <a href="<?php echo esc_url($product_page); ?>" target="_blank" title="[new window]">Product Page</a>
                                         |
-                                        <a href="https://orbisius.com/forums/forum/community-support-forum/wordpress-plugins/<?php echo $base_name_slug;?>/?utm_source=<?php echo $base_name_slug;?>&utm_medium=plugin-settings&utm_campaign=product"
+                                        <a href="<?php echo esc_url("https://orbisius.com/forums/forum/community-support-forum/wordpress-plugins/$base_name_slug?utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product");?>"
                                            target="_blank" title="[new window]">Support Forums</a>
-
 										<!-- |
 										<a href="//docs.google.com/viewer?url=https%3A%2F%2Fdl.dropboxusercontent.com%2Fs%2Fwz83vm9841lz3o9%2FOrbisius_LikeGate_Documentation.pdf" target="_blank">Documentation</a>-->
                                     </span>
