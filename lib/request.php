@@ -128,53 +128,10 @@ class Orbisius_SEO_Editor_Request {
 		if (is_null($val)) {
 			unset($this->data[$key]);
 		} else {
-			if ($key == 'redirect_to') {
-				$val = $this->parseAppRedirectUrl($val);
-			}
-
 			$this->data[$key] = $val;
 		}
 
 		return $val;
-	}
-
-	/**
-	 * Checks a request val and compares it to a value or a list of a values separated by comma, ; or |
-	 * $req_obj->getAndCompare('action', 'lostpassword,lp')
-	 * @param string $key
-	 * @param mixed $checked_val
-	 * @param mixed $default
-	 * @return bool
-	 */
-	public function getAndCompare($key = '', $checked_val = '', $default = '') {
-		$val = $this->get($key, $default);
-
-		// Both empty
-		if (empty($checked_val) && empty($val)) {
-			return true;
-		}
-
-		// different. no need to check other cases
-		if (!empty($checked_val) && empty($val)) {
-			return false;
-		}
-
-		if (strcasecmp($val, $checked_val) == 0) {
-			return true;
-		}
-
-		$sep = $this->getSep($checked_val);
-
-		$vals = explode($sep, $checked_val);
-		$vals = array_map('trim', $vals);
-		$vals = array_filter($vals);
-		$vals = array_unique($vals);
-
-		if (in_array($val, $vals)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -297,7 +254,7 @@ class Orbisius_SEO_Editor_Request {
 	}
 
 	/**
-	 * get and esc
+	 * get and escape
 	 * @param string $key
 	 * @param int $force_type
 	 * @return string
@@ -307,6 +264,8 @@ class Orbisius_SEO_Editor_Request {
 		$v = esc_attr( $v );
 		return $v;
 	}
+
+	private $server_env = [];
 
 	/**
 	 * WP puts slashes in the values so we need to remove them.
@@ -321,13 +280,12 @@ class Orbisius_SEO_Editor_Request {
 			$data = $this->sanitizeData( $data );
 			$this->data = $data;
 
-			// Automatically sync data if found in the request and if it can be parsed.
-			if (!empty($data['qs_app_data'])) {
-				$app_intent_data = $this->unserializeIntentData($data['qs_app_data']);
-
-				if (!empty($app_intent_data)) {
-					$this->updateIntentData($app_intent_data);
-				}
+			if (!empty($_SERVER)) {
+				$server_env = $_SERVER;
+				$server_env = stripslashes_deep( $server_env );
+				$server_env = $this->sanitizeData( $server_env );
+				$server_env = Orbisius_SEO_Editor_String_Util::trim($server_env);
+				$this->server_env = $server_env;
 			}
 		}
 	}
@@ -379,7 +337,7 @@ class Orbisius_SEO_Editor_Request {
 	 * @return bool
 	 */
 	public function isHead() {
-		return (!empty($_SERVER['REQUEST_METHOD']) && strcasecmp($_SERVER['REQUEST_METHOD'], 'head') == 0);
+		return (!empty($this->server_env['REQUEST_METHOD']) && strcasecmp($this->server_env['REQUEST_METHOD'], 'head') == 0);
 	}
 
 	/**
@@ -388,7 +346,7 @@ class Orbisius_SEO_Editor_Request {
 	 * @return bool
 	 */
 	public function isGet() {
-		return (!empty($_SERVER['REQUEST_METHOD']) && strcasecmp($_SERVER['REQUEST_METHOD'], 'get') == 0);
+		return (!empty($this->server_env['REQUEST_METHOD']) && strcasecmp($this->server_env['REQUEST_METHOD'], 'get') == 0);
 	}
 
 	/**
@@ -403,7 +361,7 @@ class Orbisius_SEO_Editor_Request {
 			}
 		}
 
-		return !empty($_POST) || (!empty($_SERVER['REQUEST_METHOD']) && strcasecmp($_SERVER['REQUEST_METHOD'], 'post') == 0);
+		return !empty($_POST) || (!empty($this->server_env['REQUEST_METHOD']) && strcasecmp($this->server_env['REQUEST_METHOD'], 'post') == 0);
 	}
 
 	const REQUEST_METHOD_GET = 'GET';
@@ -423,7 +381,8 @@ class Orbisius_SEO_Editor_Request {
 			throw new Exception("URL is empty");
 		}
 
-		$timeout = QS_SITE_DEV_ENV ? 90 : 30;
+		$dev_env = defined('QS_SITE_DEV_ENV') && QS_SITE_DEV_ENV;
+		$timeout = $dev_env ? 90 : 30;
 
 		if ( ! empty( $extra['timeout'] ) ) {
 			$timeout = $extra['timeout'];
@@ -432,7 +391,7 @@ class Orbisius_SEO_Editor_Request {
 			unset( $req_params['__timeout'] );
 		}
 
-		$verify_ssl = QS_SITE_DEV_ENV ? false : true;
+		$verify_ssl = $dev_env ? false : true;
 
 		if (isset($extra['verify_ssl'])) {
 			$verify_ssl = !empty($extra['verify_ssl']);
@@ -450,7 +409,7 @@ class Orbisius_SEO_Editor_Request {
 			'cookies' => [],
 		);
 
-		$req_method = QS_Site_App_Util::getField('req_method|request_method|method', $extra);
+		$req_method = Orbisius_SEO_Editor_Util::getField('req_method|request_method|method', $extra);
 
 		if (!empty($req_method)) {
 			$wp_remote_post_params['method'] = $req_method;
@@ -479,8 +438,8 @@ class Orbisius_SEO_Editor_Request {
 		// Can be used by hash auth.
 		if (!empty($extra['user_agent'])) {
 			$wp_remote_post_params['user-agent'] = $extra['user_agent'];
-		} elseif (!empty($_SERVER['HTTP_USER_AGENT'])) {
-			$wp_remote_post_params['user-agent'] = $_SERVER['HTTP_USER_AGENT'];
+		} elseif (!empty($this->server_env['HTTP_USER_AGENT'])) {
+			$wp_remote_post_params['user-agent'] = $this->server_env['HTTP_USER_AGENT'];
 		}
 
 		$wp_remote_post_params['headers'] = empty('headers') ? [] : $wp_remote_post_params['headers'];
@@ -551,9 +510,9 @@ class Orbisius_SEO_Editor_Request {
 
 			// If it's the dev site don't do multiple attempts because on dev and with debugging enabled
 			// it can get confusing really quick when multiple requests come in.
-			if (QS_Site_App_Env::isDev()) {
+			/*if ($dev_env) {
 				break;
-			}
+			}*/
 
 			usleep( 5000 * 1000 ); // take a short break
 		}
@@ -585,7 +544,7 @@ class Orbisius_SEO_Editor_Request {
 
 			$res_obj->data('raw_data', $buff);
 
-			if (!QS_Site_App_Env::isDev()) {
+			if ($dev_env) {
 				$res_obj->data( 'stderr', $parse_obj->stderr );
 			}
 
@@ -655,9 +614,9 @@ class Orbisius_SEO_Editor_Request {
 		$local_ips = [ '::1', '127.0.0.1' ];
 
 		if ($force == self::REDIRECT_DEFAULT
-		    && (!empty($_SERVER['REMOTE_ADDR'])
-		        && !in_array($_SERVER['REMOTE_ADDR'], $local_ips)
-		        && $_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR'])
+		    && (!empty($this->server_env['REMOTE_ADDR'])
+		        && !in_array($this->server_env['REMOTE_ADDR'], $local_ips)
+		        && $this->server_env['REMOTE_ADDR'] == $this->server_env['SERVER_ADDR'])
 		) { // internal req or dev machine
 			return;
 		}
@@ -714,7 +673,7 @@ class Orbisius_SEO_Editor_Request {
 	 * @return string
 	 */
 	public function getRequestUrl() {
-		$req_url = empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'];
+		$req_url = empty($this->server_env['REQUEST_URI']) ? '' : $this->server_env['REQUEST_URI'];
 		return $req_url;
 	}
 
@@ -765,7 +724,7 @@ class Orbisius_SEO_Editor_Request {
 	 * @return bool
 	 */
 	public function isHomePage($flags = 0) {
-		$req_script = empty($_SERVER['PHP_SELF']) ? '/' : $_SERVER['PHP_SELF'];
+		$req_script = empty($this->server_env['PHP_SELF']) ? '/' : $this->server_env['PHP_SELF'];
 		$site_web_path = dirname($req_script);
 		$req_url = $this->getRequestUrl();
 		$clean_url = $req_url;
@@ -802,10 +761,10 @@ class Orbisius_SEO_Editor_Request {
 	public function getHost() {
 		$host = '';
 
-		if (!empty($_SERVER['SERVER_NAME'])) {
-			$host = $_SERVER['SERVER_NAME'];
-		} elseif (!empty($_SERVER['HTTP_HOST'])) {
-			$host = $_SERVER['HTTP_HOST'];
+		if (!empty($this->server_env['SERVER_NAME'])) {
+			$host = $this->server_env['SERVER_NAME'];
+		} elseif (!empty($this->server_env['HTTP_HOST'])) {
+			$host = $this->server_env['HTTP_HOST'];
 			$host = strip_tags($host);
 			$host = trim($host);
 		}
@@ -820,8 +779,8 @@ class Orbisius_SEO_Editor_Request {
 	public function getUserAgent() {
 		$user_agent = '';
 
-		if (!empty($_SERVER['HTTP_USER_AGENT'])) {
-			$user_agent = $_SERVER['HTTP_USER_AGENT'];
+		if (!empty($this->server_env['HTTP_USER_AGENT'])) {
+			$user_agent = $this->server_env['HTTP_USER_AGENT'];
 			$user_agent = strip_tags($user_agent);
 			$user_agent = trim($user_agent);
 		}
@@ -890,7 +849,7 @@ class Orbisius_SEO_Editor_Request {
 			return true;
 		}
 
-		$yes = ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strcasecmp( $_SERVER['HTTP_X_REQUESTED_WITH'], 'xmlhttprequest') == 0;
+		$yes = ! empty( $this->server_env['HTTP_X_REQUESTED_WITH'] ) && strcasecmp( $this->server_env['HTTP_X_REQUESTED_WITH'], 'xmlhttprequest') == 0;
 
 		return $yes;
 	}
@@ -961,14 +920,16 @@ class Orbisius_SEO_Editor_Request {
 
 		// Different header is required for ajax and jsonp
 		// see https://gist.github.com/cowboy/1200708
-		$callback = !empty($_REQUEST['callback']) ? preg_replace('/[^\w\$]/si', '', $_REQUEST['callback']) : false;
+		$callback = !empty($_REQUEST['callback'])
+			? preg_replace('/[^\w\$]/si', '', $this->sanitizeData($_REQUEST['callback']))
+			: false;
 
 		if (!headers_sent()) {
 			header('Access-Control-Allow-Origin: *'); // safe? smart? to allow access from anywhere?
 			header('Access-Control-Allow-Methods: GET, POST');
 			header("Access-Control-Allow-Headers: X-Requested-With");
 
-			if (QS_SITE_LIVE_ENV) { // debugger doesn't start when it's app/js content type
+			if (defined('QS_SITE_LIVE_ENV') && QS_SITE_LIVE_ENV) { // debugger doesn't start when it's app/js content type
 				header( 'Content-Type: ' . ( $callback ? 'application/javascript' : 'application/json' ) . ';charset=UTF-8' );
 			}
 		}
@@ -1082,24 +1043,24 @@ class Orbisius_SEO_Editor_Request {
 		}
 
 		// Allow from any origin
-		if ( isset( $_SERVER['HTTP_ORIGIN'] ) ) {
+		if ( isset( $this->server_env['HTTP_ORIGIN'] ) ) {
 			// Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
 			// you want to allow, and if so:
-			header( "Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}" );
+			header( "Access-Control-Allow-Origin: {$this->server_env['HTTP_ORIGIN']}" );
 			header( 'Access-Control-Allow-Credentials: true' );
 			header( "Access-Control-Allow-Headers: X-Requested-With, token, Content-Type" );
 			header( 'Access-Control-Max-Age: 86400' );    // cache for 1 day
 		}
 
 		// Access-Control headers are received during OPTIONS requests
-		if ( $_SERVER['REQUEST_METHOD'] == 'OPTIONS' ) {
+		if ( $this->server_env['REQUEST_METHOD'] == 'OPTIONS' ) {
 			// may also be using PUT, PATCH, HEAD etc
-			if ( isset( $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'] ) ) {
+			if ( isset( $this->server_env['HTTP_ACCESS_CONTROL_REQUEST_METHOD'] ) ) {
 				header( "Access-Control-Allow-Methods: GET, POST, OPTIONS" );
 			}
 
-			if ( isset( $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'] ) ) {
-				header( "Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}" );
+			if ( isset( $this->server_env['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'] ) ) {
+				header( "Access-Control-Allow-Headers: {$this->server_env['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}" );
 			}
 
 			exit(0);
@@ -1145,8 +1106,11 @@ class Orbisius_SEO_Editor_Request {
 			return '';
 		}
 
-		if (empty($url) && !empty($_SERVER['REQUEST_URI'])) {
-			$url = $_SERVER['REQUEST_URI'];
+		$req_obj = self::getInstance();
+		$server_env = $req_obj->getServerEnv();
+
+		if (empty($url) && !empty($server_env['REQUEST_URI'])) {
+			$url = $server_env['REQUEST_URI'];
 		}
 
 		$url = strip_tags( $url );
@@ -1185,10 +1149,13 @@ class Orbisius_SEO_Editor_Request {
 	 * @return string
 	 */
 	public static function removeQueryParam($key, $url = '') {
+		$req_obj = self::getInstance();
+		$server_env = $req_obj->getServerEnv();
+
 		$keys = (array) $key;
 
-		if (empty($url) && !empty($_SERVER['REQUEST_URI'])) {
-			$url = $_SERVER['REQUEST_URI'];
+		if (empty($url) && !empty($server_env['REQUEST_URI'])) {
+			$url = $server_env['REQUEST_URI'];
 		}
 
 		$url = strip_tags( $url );
@@ -1206,196 +1173,6 @@ class Orbisius_SEO_Editor_Request {
 		}
 
 		return $url;
-	}
-
-	/**
-	 * Parses custom redir rules app:billing:pricing:sku-123
-	 * @param string $url
-	 * @return string
-	 */
-	public function parseAppRedirectUrl($redirect_to) {
-		if (strpos($redirect_to, ':') === false) { // not our app redir format
-			return $redirect_to;
-		}
-
-		// handle: billing:pricing:sku
-		// billing:order:123
-		$req_obj = Orbisius_SEO_Editor_Request::getInstance();
-		$servers_obj = QS_Site_App_Servers::getInstance();
-		$new_redirect_to = $servers_obj->getBillingServerUrl();
-
-		// handle: app:billing:pricing:sku-123
-		// handle: app:billing:checkout:sku-123
-		// todo:app:mkt:developers
-		// todo:app:billing:order:123
-		// todo:app:support:ticket_id-123
-		$post_redirect_to = $servers_obj->getBillingServerUrl();
-
-		if (preg_match('#^(app|ext)?:?([\w\-]+):([\w\-]+):?(?:([a-z]\w+)[\-\:]*([\w\-]*))?$#si', $redirect_to, $matches)) {
-			//$namespace = empty($matches[1]) ? 'app' : strtolower($matches[1]); // app
-			$site_type = strtolower($matches[2]); // billing
-			$section = strtolower($matches[3]); // pricing
-			$attrib_key = empty($matches[4]) ? '' : $matches[4]; // key val: sku
-			$attrib_val = empty($matches[4]) ? '' : $matches[5]; // aaaa-aasfsf
-
-			// If it's billing we need to upsert the user and then redirect
-			if ($site_type == 'billing') {
-				$sku = '';
-
-				if (empty($attrib_val)) { // the sku is directly passed without key-val format.
-					$sku = $attrib_key;
-				} else {
-					$sku = $attrib_val;
-				}
-
-				// If it's billing we need to upsert the user and then redirect
-				if ($section == 'pricing') {
-					$post_redirect_to = QS_Site_App_Page::getInstance()->getPage(QS_Site_App_Page::PAGE_PRICING, QS_Site_App_Page::CTX_BILLING_SITE);
-
-					if (!empty($sku)) {
-						$post_redirect_to = Orbisius_SEO_Editor_Request::addQueryParam('app_pricing_sku', $sku, $post_redirect_to);
-					}
-				} elseif ($section == 'checkout') {
-					$post_redirect_to = Orbisius_SEO_Editor_Request::addQueryParam('qs_site_cmd', 'cart.add', $post_redirect_to);
-					$post_redirect_to = Orbisius_SEO_Editor_Request::addQueryParam('sku', $sku, $post_redirect_to);
-				} else {
-					throw new Exception("Unsupported redirect section");
-				}
-			} elseif ($site_type == 'app') {
-				if ($section == 'addons') {
-					$post_redirect_to = QS_Site_App_Page::getInstance()->getPage(QS_Site_App_Page::PAGE_ADDONS, QS_Site_App_Page::CTX_APP_SITE);
-					$post_redirect_to = Orbisius_SEO_Editor_Request::addQueryParam('site_url', $req_obj->site_url, $post_redirect_to);
-				}
-			} else {
-				throw new Exception("Unsupported redirect site type");
-			}
-
-			$redirect_to = $post_redirect_to;
-		}
-
-		return $redirect_to;
-	}
-
-	private $intent_data_sess_key = 'qs_app_intent_data_sess';
-	private $intent_data_expiration = 2 * 3600;
-	private $intent_data = [
-
-	];
-
-	/**
-	 * @param void
-	 * @return string
-	 */
-	public function serializeIntentData() {
-		$intent_data = $this->getIntentData();
-
-		if (empty($intent_data)) {
-			return '';
-		}
-
-		$enc_key = $this->getIntentDataEncryptionKey();
-		$c = new QS_Site_App_Cipher($enc_key); // key is optional
-		$intent_data_ser = http_build_query($intent_data);
-		$encrypted = $c->encrypt($intent_data_ser);
-
-		return $encrypted;
-	}
-
-	/**
-	 *
-	 * @return array
-	 */
-	public function unserializeIntentData($str) {
-		$decrypted_arr = [];
-		$enc_key = $this->getIntentDataEncryptionKey();
-		$c = new QS_Site_App_Cipher($enc_key); // key is optional
-		$decrypted_str_query_str = $c->decrypt($str);
-
-		if (empty($decrypted_str_query_str)) {
-			return [];
-		}
-
-		parse_str($decrypted_str_query_str, $decrypted_arr);
-
-		return $decrypted_arr;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getIntentData() {
-		$sess_key = $this->intent_data_sess_key;
-
-		if (!empty($_SESSION[$sess_key])) {
-			$this->intent_data = array_replace_recursive($this->intent_data, $_SESSION[$sess_key]);
-		}
-
-		return $this->intent_data;
-	}
-
-	/**
-	 * @param array $data
-	 * @return void
-	 */
-	public function updateIntentData($data = []) {
-		$x = [];
-		$x['last_updated_ts'] = time();
-		$intent_data = $this->getIntentData();
-
-		// is data expired?
-		if (!empty($intent_data['last_updated_ts']) && time() - $intent_data['last_updated_ts'] >= $this->intent_data_expiration) {
-			$this->intent_data = $x;
-		}
-
-		$data = empty($data) ? [] : (array) $data;
-		$data = array_replace_recursive($intent_data, $data, $x);
-
-		$sess_key = $this->intent_data_sess_key;
-		$_SESSION[$sess_key] = $data;
-		$this->intent_data = $data;
-
-		return $this->getIntentData();
-	}
-
-	/**
-	 * @return void
-	 */
-	public function clearIntentData() {
-		$sess_key = $this->intent_data_sess_key;
-		unset($_SESSION[$sess_key]);
-		$this->intent_data = [];
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getIntentDataEncryptionKey() {
-		if (defined('APP_INTENT_DATA_ENC_KEY')) {
-			return APP_INTENT_DATA_ENC_KEY;
-		}
-
-		if (getenv('APP_INTENT_DATA_ENC_KEY')) {
-			return getenv('APP_INTENT_DATA_ENC_KEY');
-		}
-
-		if (class_exists('Orbisius_Dot_Env')) {
-			$dot_env = Orbisius_Dot_Env::getInstance();
-			$key = $dot_env->get('APP_INTENT_DATA_ENC_KEY');
-
-			if (!empty($key)) {
-				return $key;
-			}
-
-			$key = $dot_env->get('APP_ID');
-
-			if (!empty($key)) {
-				return $key;
-			}
-		}
-
-		$key = 'aisfj9823r89asihafa2398uaisfaiushf8y23afafd' . date('Y-m'); // fallback
-
-		return $key;
 	}
 
 	/**
@@ -1444,5 +1221,12 @@ class Orbisius_SEO_Editor_Request {
 		}
 
 		return (strpos($page_fmt, $searched_text) !== false);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getServerEnv(): array {
+		return $this->server_env;
 	}
 }
