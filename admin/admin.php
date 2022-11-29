@@ -275,6 +275,9 @@ class Orbisius_SEO_Editor_Admin {
 			filemtime( plugin_dir_path( ORBISIUS_SEO_EDITOR_BASE_PLUGIN ) . $file_rel ),
 			true
 		);
+
+		$ctx = [];
+		do_action('orbisius_seo_editor_admin_action_enqueue_assets', $ctx);
     }
 
 	/**
