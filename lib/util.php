@@ -2,12 +2,12 @@
 
 class Orbisius_SEO_Editor_Util {
 	/**
-	 * Orbisius_SEO_Editor_Util::get_count();
+	 * Orbisius_SEO_Editor_Util::getCount();
 	 *
 	 * @global obj $wpdb
 	 * @return int
 	 */
-	public static function get_count($post_type = 'product') {
+	public static function getCount($post_type = 'product') {
 		global $wpdb;
 
 		$post_status = $post_type == 'attachment' ? 'inherit' : 'publish';
@@ -788,5 +788,29 @@ MSG_EOF;
 		$hash = sha1(serialize($data));
 
 		return $hash;
+	}
+
+	/**
+	 * Orbisius_SEO_Editor_Util::getField('field');
+	 * @param string|array $inp_field
+	 * @param mixed $default_val
+	 * @param mixed $opts
+	 * @return mixed|string
+	 */
+	public function getField($inp_field, $default_val = '', $opts = []) {
+		if (is_array($inp_field)) {
+			$inp_field = join(',', $inp_field);
+		}
+
+		$fields = preg_split('#[\s\;\|\/,]+#si', $inp_field);
+		$fields = (array) $fields;
+
+		foreach ( $fields as $field ) {
+			if (isset($opts[$field])) {
+				return $opts[$field];
+			}
+		}
+
+		return $default_val;
 	}
 }
