@@ -121,6 +121,16 @@ class Orbisius_SEO_Editor_Request {
 
 	/**
 	 * @param string $key
+	 * @param mixed $default_val
+	 * @return mixed
+	 */
+	public function getServerEnv( $key, $default_val = '') {
+		$val = isset($this->server_env[$key]) ? $this->server_env[$key] : $default_val;
+		return $val;
+	}
+
+	/**
+	 * @param string $key
 	 * @param mixed $val
 	 * @return mixed
 	 */
@@ -998,7 +1008,7 @@ class Orbisius_SEO_Editor_Request {
 		}
 
 		$req_obj = self::getInstance();
-		$server_env = $req_obj->getServerEnv();
+		$server_env = $req_obj->getServerEnvData();
 
 		if (empty($url) && !empty($server_env['REQUEST_URI'])) {
 			$url = $server_env['REQUEST_URI'];
@@ -1041,7 +1051,7 @@ class Orbisius_SEO_Editor_Request {
 	 */
 	public static function removeQueryParam($key, $url = '') {
 		$req_obj = self::getInstance();
-		$server_env = $req_obj->getServerEnv();
+		$server_env = $req_obj->getServerEnvData();
 
 		$keys = (array) $key;
 
@@ -1117,7 +1127,7 @@ class Orbisius_SEO_Editor_Request {
 	/**
 	 * @return array
 	 */
-	public function getServerEnv(): array {
+	public function getServerEnvData(): array {
 		return $this->server_env;
 	}
 }
