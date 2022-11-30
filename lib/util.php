@@ -614,7 +614,7 @@ class Orbisius_SEO_Editor_Util {
 	 * Orbisius_SEO_Editor_Util::msg()
 	 */
 	public static function msg($msg, $status = 0, $use_inline_css = 0) {
-		$id = sanitize_title(basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN));
+		$id = sanitize_title(ORBISIUS_SEO_EDITOR_PLUGIN_SLUG);
 		$cls = '';
 		$inline_css = '';
 

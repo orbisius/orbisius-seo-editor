@@ -403,13 +403,13 @@ class Orbisius_SEO_Editor_Admin {
 					<?php foreach ($tabs as $tab_id => $rec) : ?>
                         <li class="step <?php echo $tab_id == $cur_tab ? 'app_current_step' : ''; ?>">
 							<?php if ($tab_id == $cur_tab) : ?>
-                                <h3><?php echo $rec['title']; ?></h3>
+                                <h3><?php echo esc_html($rec['title']); ?></h3>
 							<?php else : ?>
 								<?php
 								$loop_page = $cur_page_url;
 								$loop_page = add_query_arg('tab_id', $tab_id, $loop_page);
 								?>
-                                <a href='<?php echo esc_url($loop_page); ?>'><h3><?php echo $rec['title']; ?></h3></a>
+                                <a href='<?php echo esc_url($loop_page); ?>'><h3><?php echo esc_html($rec['title']); ?></h3></a>
 							<?php endif; ?>
                         </li>
 					<?php endforeach; ?>
@@ -561,7 +561,7 @@ class Orbisius_SEO_Editor_Admin {
 								<h3><span>Quick Question or Suggestion</span></h3>
 								<div class="inside">
 									<div>
-										<form method="post" action="<?php echo $quick_form_action; ?>" target="_blank" enctype="multipart/form-data">
+										<form method="post" action="<?php echo esc_url($quick_form_action); ?>" target="_blank" enctype="multipart/form-data">
 											<?php
 											global $wp_version;
 											$plugin_data = get_plugin_data(ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
@@ -637,7 +637,7 @@ class Orbisius_SEO_Editor_Admin {
 								<div class="inside">
                                     If you'd like more features and you should check the Pro version.
                                     It builds on top of the free version. It supports more SEO plugins, themes and more fields.
-                                    <a href="<?php echo esc_url("https://orbisius.com/store/product/orbisius-seo-editor-pro/?utm_source=" . urlencode(ORBISIUS_SEO_EDITOR_PLUGIN_SLUG));?>"
+                                    <a href="<?php echo esc_url("https://orbisius.com/store/product/orbisius-seo-editor-pro/?utm_source=" . ORBISIUS_SEO_EDITOR_PLUGIN_SLUG);?>"
                                        target="_blank">Orbisius SEO Editor Pro</a>
                                     <br/>Use: <strong>seo-editor-pro-fan</strong> code to get 20% off
                                 </div> <!-- .inside -->
@@ -649,7 +649,7 @@ class Orbisius_SEO_Editor_Admin {
 								<h3><span>Hire Us</span></h3>
 								<div class="inside">
 									Hire us to create a plugin/web/mobile app
-									<br/><a href="https://orbisius.com/page/free-quote/?utm_source=<?php echo str_replace('.php', '', basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN));?>&utm_medium=plugin-settings&utm_campaign=product"
+									<br/><a href="<?php echo esc_url("https://orbisius.com/page/free-quote/?utm_source=" . ORBISIUS_SEO_EDITOR_PLUGIN_SLUG . "&utm_medium=plugin-settings&utm_campaign=product"); ?>"
 									        title="If you want a custom web/mobile app/plugin developed contact us. This opens in a new window/tab"
 									        class="button-primary" target="_blank">Get a Free Quote</a>
 								</div> <!-- .inside -->
@@ -670,7 +670,7 @@ class Orbisius_SEO_Editor_Admin {
 										<form action="//WebWeb.us2.list-manage.com/subscribe/post?u=005070a78d0e52a7b567e96df&amp;id=1b83cd2093" method="post"
 										      id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
 											<input type="hidden" value="settings" name="SRC2" />
-											<input type="hidden" value="<?php echo str_replace('.php', '', basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN));?>" name="SRC" />
+											<input type="hidden" value="<?php echo esc_attr(ORBISIUS_SEO_EDITOR_PLUGIN_SLUG);?>" name="SRC" />
 
 											<span>Get notified about cool plugins we release</span>
 											<!--<div class="indicates-required"><span class="app_asterisk">*</span> indicates required
@@ -720,7 +720,7 @@ class Orbisius_SEO_Editor_Admin {
 
 									<!-- Twitter: Tweet:js -->
 									<a href="https://twitter.com/share" class="twitter-share-button"
-									   data-lang="en" data-text="Checkout <?php echo $product_name;?> #WordPress #plugin.<?php echo $product_descr_short; ?>"
+									   data-lang="en" data-text="Checkout <?php echo esc_attr($product_name);?> #WordPress #plugin.<?php echo esc_attr($product_descr_short); ?>"
 									   data-count="none" data-via="orbisius" data-related="orbisius"
 									   data-url="<?php echo esc_url($product_page_tweet_link);?>">Tweet</a>
 									<!-- /Twitter: Tweet:js -->
@@ -820,28 +820,6 @@ class Orbisius_SEO_Editor_Admin {
                                                         </label>
                                                     </td>
                                                 </tr>
-
-                                                <tr valign="top">
-                                                    <th scope="row">How to display ID</th>
-                                                    <td>
-                                                        <label for="render_id_col1">
-                                                            <input type="radio" id="render_id_col1" name="orbisius_seo_editor_opts[render_id_col]"
-                                                                   value="product_id" <?php echo checked($opts['render_id_col'], 'product_id'); ?> /> Show Product ID
-                                                        </label>
-                                                        <br/>
-
-                                                        <label for="render_id_col_show_sku">
-                                                            <input type="radio" id="render_id_col_show_sku" name="orbisius_seo_editor_opts[render_id_col]"
-                                                                   value="show_sku" <?php echo checked($opts['render_id_col'], 'show_sku'); ?> /> Show SKU (performs extra database queries)
-                                                        </label>
-                                                        <br/>
-
-                                                        <label for="render_id_col_none">
-                                                            <input type="radio" id="render_id_col_none" name="orbisius_seo_editor_opts[render_id_col]"
-                                                                   value="none" <?php echo checked($opts['render_id_col'], 'none'); ?> /> Nothing (do not show it at all)
-                                                        </label>
-                                                    </td>
-                                                </tr>
                                             </table>
 
                                             <p class="submit">
@@ -855,7 +833,6 @@ class Orbisius_SEO_Editor_Admin {
                                             Go to: Tools &gt; <a href='<?php echo Orbisius_SEO_Editor_Util::getPageLink('editor'); ?>'
                                                                  class="button-primary">Orbisius SEO Editor </a>
                                         </div>
-
 									<?php endif; ?>
                                 </div> <!-- .inside -->
                             </div> <!-- .postbox -->
@@ -866,12 +843,14 @@ class Orbisius_SEO_Editor_Admin {
                                 <div class="inside">
 
                                     <p>
-                                        Link: <a href="https://youtu.be/DiO3zkZVruA" target="_blank" title="[opens in a new and bigger tab/window]">youtube.com/watch?v=RsRBmCGuz1w&hd=1</a>
+                                        Link: <a href="https://youtu.be/DiO3zkZVruA" target="_blank"
+                                                 title="[opens in a new and bigger tab/window]">youtube.com/watch?v=RsRBmCGuz1w&hd=1</a>
                                     </p>
 
                                     <p>
                                         <iframe width="560" height="315" src="https://www.youtube.com/embed/DiO3zkZVruA"
-                                                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                title="YouTube video player"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                     </p>
                                 </div> <!-- .inside -->
                             </div> <!-- .postbox -->
@@ -890,7 +869,7 @@ class Orbisius_SEO_Editor_Admin {
                                 <h3><span>Hire Us</span></h3>
                                 <div class="inside">
                                     Hire us to create a plugin/web/mobile app
-                                    <br/><a href="https://orbisius.com/page/free-quote/?utm_source=<?php echo str_replace('.php', '', basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN));?>&utm_medium=plugin-settings&utm_campaign=product"
+                                    <br/><a href="<?php echo url("https://orbisius.com/page/free-quote/?utm_source=". ORBISIUS_SEO_EDITOR_PLUGIN_SLUG . "&utm_medium=plugin-settings&utm_campaign=product");?>
                                             title="If you want a custom web/mobile app/plugin developed contact us. This opens in a new window/tab"
                                             class="button-primary" target="_blank">Get a Free Quote</a>
                                 </div> <!-- .inside -->
@@ -911,7 +890,7 @@ class Orbisius_SEO_Editor_Admin {
                                         <form action="//WebWeb.us2.list-manage.com/subscribe/post?u=005070a78d0e52a7b567e96df&amp;id=1b83cd2093" method="post"
                                               id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
                                             <input type="hidden" value="settings" name="SRC2" />
-                                            <input type="hidden" value="<?php echo str_replace('.php', '', basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN));?>" name="SRC" />
+                                            <input type="hidden" value="<?php echo esc_attr(ORBISIUS_SEO_EDITOR_PLUGIN_SLUG);?>" name="SRC" />
 
                                             <span>Get notified about cool plugins we release</span>
                                             <!--<div class="indicates-required"><span class="app_asterisk">*</span> indicates required

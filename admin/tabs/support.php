@@ -14,7 +14,7 @@
         <h3>Customizations / WordPress Development</h3>
         <div>
             If you need customization or other WordPress development, migration, hosting set up contact us to get a
-            <a href="https://orbisius.com/free-quote?utm_source=<?php echo ORBISIUS_SEO_EDITOR_PLUGIN_SLUG;?>" target="_blank">free quote</a>
+            <a href="<?php echo esc_url("https://orbisius.com/free-quote?utm_source=" . urlencode(ORBISIUS_SEO_EDITOR_PLUGIN_SLUG));?>" target="_blank">free quote</a>
         </div>
 	</div>
 </div>
