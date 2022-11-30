@@ -284,10 +284,10 @@ class Orbisius_SEO_Editor_Admin {
 	 * Adds admin bar items for easy access to the theme creator and editor
 	 */
 	function addLinksToWPAdminBar() {
-		$this->addNodeToWPAdminBar('Orbisius SEO Editor', Orbisius_SEO_Editor_Util::getPageLink('editor'));
-		$this->addNodeToWPAdminBar('Editor', Orbisius_SEO_Editor_Util::getPageLink('editor'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
-		$this->addNodeToWPAdminBar('Settings', Orbisius_SEO_Editor_Util::getPageLink('settings'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
-		$this->addNodeToWPAdminBar('Support', Orbisius_SEO_Editor_Util::getPageLink('support'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
+		$this->addNodeToWPAdminBar('Orbisius SEO Editor', esc_url( Orbisius_SEO_Editor_Util::getPageLink('editor') ) );
+		$this->addNodeToWPAdminBar('Editor', esc_url( Orbisius_SEO_Editor_Util::getPageLink('editor'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN) );
+		$this->addNodeToWPAdminBar('Settings', esc_url( Orbisius_SEO_Editor_Util::getPageLink('settings'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN) );
+		$this->addNodeToWPAdminBar('Support', esc_url( Orbisius_SEO_Editor_Util::getPageLink('support'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN) );
 	}
 
 	/**
@@ -828,7 +828,7 @@ class Orbisius_SEO_Editor_Admin {
                                         <div>
                                             The plugin doesn't have settings options at the moment.<br/><br/>
 
-                                            Go to: Tools &gt; <a href='<?php echo Orbisius_SEO_Editor_Util::getPageLink('editor'); ?>'
+                                            Go to: Tools &gt; <a href='<?php echo esc_url(Orbisius_SEO_Editor_Util::getPageLink('editor')); ?>'
                                                                  class="button-primary">Orbisius SEO Editor </a>
                                         </div>
 									<?php endif; ?>
@@ -1117,15 +1117,18 @@ class Orbisius_SEO_Editor_Admin {
 	function addQuickSettingsLink($links, $file) {
 		if ($file == plugin_basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN)) {
 			$link = Orbisius_SEO_Editor_Util::getPageLink('support');
-			$settings_link = "<a href=\"{$link}\" target='_blank'>Support</a>";
+            $link_esc = esc_url($link);
+			$settings_link = "<a href=\"{$link_esc}\" target='_blank'>Support</a>";
 			array_unshift($links, $settings_link);
 
 			$link = Orbisius_SEO_Editor_Util::getPageLink('settings');
-			$settings_link = "<a href=\"{$link}\">Settings</a>";
+			$link_esc = esc_url($link);
+			$settings_link = "<a href=\"{$link_esc}\">Settings</a>";
 			array_unshift($links, $settings_link);
 
 			$link = Orbisius_SEO_Editor_Util::getPageLink('editor');
-			$action_link = "<a href=\"{$link}\">SEO Editor</a>";
+			$link_esc = esc_url($link);
+			$action_link = "<a href=\"{$link_esc}\">SEO Editor</a>";
 			array_unshift($links, $action_link);
 		}
 

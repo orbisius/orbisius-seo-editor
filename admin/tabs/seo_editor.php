@@ -177,7 +177,7 @@ if ($is_post) {
 	<?php if (!empty($status_rec['work_log'])) : ?>
         <div class="updated"><p>
             <h3>Process Status (Exec time: <?php echo $proces_exec_time;?>s)
-                | <a href='<?php echo Orbisius_SEO_Editor_Util::getPageLink('editor'); ?>'
+                | <a href='<?php echo esc_url( Orbisius_SEO_Editor_Util::getPageLink('editor')); ?>'
                      class="button">Process New</a>
 
 				<?php if (0) : ?>
