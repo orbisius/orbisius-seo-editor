@@ -187,7 +187,8 @@ class Orbisius_SEO_Editor_Util {
 			// e.g. product-price
 			foreach ($header_columns as $key => $col) {
 				$cls = $key;
-				$buff .= "\t<th class='$cls'>$col</th>\n";
+				$col_esc = esc_html($col);
+				$buff .= "\t<th class='$cls'>$col_esc</th>\n";
 			}
 
 			$buff .= "</tr></thead><tbody>\n";
@@ -207,18 +208,19 @@ class Orbisius_SEO_Editor_Util {
 
 				//$attachment_data = Orbisius_SEO_Editor_Media::getInfo($post_rec);
 				$id = $post_rec['id'];
+				$id_esc = (int) $id;
 
 				if ($render_id_col) {
 					// Hidden checkbox which appears only if the admin wants to cherry pick products
-					$columns['sel_col'] = "<input type='checkbox' name='orbisius_seo_editor_data[$id][user_selected]' value='1' />";
+					$columns['sel_col'] = "<input type='checkbox' name='orbisius_seo_editor_data[$id_esc][user_selected]' value='1' />";
 
 					// ID content
-					$id_col = "$cnt) #" . $id;
+					$id_col = "$cnt) #" . $id_esc;
 					$columns['id_col'] = "<a href='javascript:void(0);' title='Click to select (works if individual product selection is enabled).'>$id_col</a>";
 				}
 
 				// Thumbnail content
-				$t = 'ID: ' . $id;
+				$t = 'ID: ' . $id_esc;
 				//$thumbnail = $attachment_data['src'];
 				/*$columns['thumbnail'] = "<a href='javascript:void(0);' "
 						. "title=''><img style='width:100%;' src='$thumbnail' alt=''/></a>";*/
@@ -237,15 +239,15 @@ class Orbisius_SEO_Editor_Util {
 				$view_post_link = add_query_arg( [ 'p' => $id ], site_url() );
 				$view_post_link_esc = esc_url($view_post_link);
 
-				$columns['id_col'] = "#$cnt | ID: $id";
+				$columns['id_col'] = "#$cnt | ID: $id_esc";
 				$columns['id_col'] .= " | <a href='$edit_post_link_esc' target='_blank' title='Edit this item (new tab/window)'>Edit</a>";
 				$columns['id_col'] .= " | <a href='$view_post_link_esc' target='_blank' title='View the item on public side (new tab/window)'>View</a>";
 
 				// Just displaying the title along with a slug (so we can have more fields to edit see max_input vars for php)
 				$columns['post_title'] = esc_html($post_rec['post_title'] . ' | link: ' . $post_rec['post_name']); // let's just show the title to save inputs
-				//$columns['post_title'] = Orbisius_SEO_Editor_HTML::text("orbisius_seo_editor_data[$id][title]", $post_rec['post_title'], 'textarea class="widefat" placeholder="Enter title" ');
-//				$columns['meta_title'] = Orbisius_SEO_Editor_HTML::text("orbisius_seo_editor_data[$id][meta_title]", $post_rec['meta_title'], 'textarea class="widefat" placeholder="Enter Alt text" ');
-//				$columns['meta_description'] = Orbisius_SEO_Editor_HTML::text("orbisius_seo_editor_data[$id][meta_description]", $post_rec['meta_description'], 'textarea class="widefat" placeholder="Enter description" ');
+				//$columns['post_title'] = Orbisius_SEO_Editor_HTML::text("orbisius_seo_editor_data[$id_esc][title]", $post_rec['post_title'], 'textarea class="widefat" placeholder="Enter title" ');
+//				$columns['meta_title'] = Orbisius_SEO_Editor_HTML::text("orbisius_seo_editor_data[$id_esc][meta_title]", $post_rec['meta_title'], 'textarea class="widefat" placeholder="Enter Alt text" ');
+//				$columns['meta_description'] = Orbisius_SEO_Editor_HTML::text("orbisius_seo_editor_data[$id_esc][meta_description]", $post_rec['meta_description'], 'textarea class="widefat" placeholder="Enter description" ');
 
 				$ctx = array(
 					'product_id' => $id,
@@ -258,7 +260,7 @@ class Orbisius_SEO_Editor_Util {
 
 				if (!empty($post_rec['hash'])) {
 					$hash_esc = esc_attr($post_rec['hash']);
-					$hash_hid_field = "<input type='hidden' name='orbisius_seo_editor_data[$id][hash]' value='$hash_esc' />";
+					$hash_hid_field = "<input type='hidden' name='orbisius_seo_editor_data[$id_esc][hash]' value='$hash_esc' />";
 					$columns['post_title'] .= $hash_hid_field;
 				}
 
@@ -276,7 +278,7 @@ class Orbisius_SEO_Editor_Util {
 						$val_html = $val;
 					} else {
 						$val_html = Orbisius_SEO_Editor_HTML::text(
-							"orbisius_seo_editor_data[$id][$key]",
+							"orbisius_seo_editor_data[$id_esc][$key]",
 							$val,
 							"textarea class='widefat' "
 						);
