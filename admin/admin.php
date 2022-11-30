@@ -799,8 +799,6 @@ class Orbisius_SEO_Editor_Admin {
 
                                 <h3><span>Settings</span></h3>
                                 <div class="inside">
-									<?php do_action( 'orbisius_plugin_license_section_' . ORBISIUS_SEO_EDITOR_BASE_PLUGIN ); ?>
-
 									<?php if (0) : ?>
                                         <form method="post" action="options.php">
 											<?php settings_fields('orbisius_seo_editor_settings'); ?>
