@@ -284,7 +284,7 @@ class Orbisius_SEO_Editor_Util {
 						);
 					}
 
-					$cls = $key;
+					$cls = sanitize_title($key);
 					$buff .= "\t<td class='$cls'>$val_html</td>\n";
 				}
 
