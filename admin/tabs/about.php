@@ -8,8 +8,8 @@
 		<div>
             This plugin was created by the Orbisius team.
 			If you ever run into an error or have a suggestion please contact
-            <a href="https://orbisius.com/support" target="_blank">Orbisius Support</a>
-		</div>
+            <a href="<?php echo esc_url("https://orbisius.com/support?utm_source=" . urlencode(ORBISIUS_SEO_EDITOR_PLUGIN_SLUG));?>" target="_blank">Orbisius Support</a>
+        </div>
 
 		<div>
             <h4>Customizations / WordPress Development</h4>

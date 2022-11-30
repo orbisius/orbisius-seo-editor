@@ -4,7 +4,7 @@ $buff = '';
 $error_found = false;
 $disclaimer = "Disclaimer: THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.";
 $msg = Orbisius_SEO_Editor_Util::msg("Before doing anything, it's always recommended to back up your site using a backup or migration plugin. We try to make our code rock solid and at the same time it's impossible to catch all the bugs, so we have this disclaimer."
-                                     . "<br/>" . $disclaimer . "<br/>", 0);
+                                     . "<br/>" . esc_html($disclaimer) . "<br/>", 0);
 $req_obj = Orbisius_SEO_Editor_Request::getInstance();
 $is_post = $req_obj->isPost();
 
@@ -215,6 +215,6 @@ if ($is_post) {
 			</div> <!-- .inside -->
 		</div> <!-- .postbox -->
 
-		<?php echo $disclaimer; ?>
+		<?php echo esc_html($disclaimer); ?>
 	<?php endif; ?>
 </form>
