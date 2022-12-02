@@ -915,17 +915,17 @@ class Orbisius_SEO_Editor_Admin {
 									<?php
 									$plugin_data = get_plugin_data(ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
 									$product_name = trim($plugin_data['Name']);
-									$product_page = trim($plugin_data['PluginURI']);
+									$product_page_url = trim($plugin_data['PluginURI']);
 									$product_descr = trim($plugin_data['Description']);
 									$product_descr_short = substr($product_descr, 0, 50) . '...';
 									$product_descr_short .= ' #WordPress #plugin';
 
 									$base_name_slug = basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
 									$base_name_slug = str_replace('.php', '', $base_name_slug);
-									$product_page .= (strpos($product_page, '?') === false) ? '?' : '&';
-									$product_page .= "utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product";
+									$product_page_url .= (strpos($product_page_url, '?') === false) ? '?' : '&';
+									$product_page_url .= "utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product";
 
-									$product_page_tweet_link = $product_page;
+									$product_page_tweet_link = $product_page_url;
 									$product_page_tweet_link = str_replace('plugin-settings', 'tweet', $product_page_tweet_link);
 									?>
                                     <!-- Twitter: code -->
@@ -941,21 +941,18 @@ class Orbisius_SEO_Editor_Admin {
 
                                     <!-- Twitter: Tweet:js -->
                                     <a href="https://twitter.com/share" class="twitter-share-button"
-                                       data-lang="en" data-text="Checkout <?php echo $product_name;?> #WordPress #plugin.<?php echo $product_descr_short; ?>"
+                                       data-lang="en" data-text="Checkout <?php echo esc_attr($product_name);?> #WordPress #plugin.<?php echo esc_attr($product_descr_short); ?>"
                                        data-count="none" data-via="orbisius" data-related="orbisius"
-                                       data-url="<?php echo $product_page_tweet_link;?>">Tweet</a>
+                                       data-url="<?php echo esc_url($product_page_tweet_link);?>">Tweet</a>
                                     <!-- /Twitter: Tweet:js -->
 
                                     <br/>
                                     <span>
-                                    <a href="<?php echo $product_page; ?>" target="_blank" title="[new window]">Product Page</a>
-                                    |
-                                    <a href="https://orbisius.com/forums/forum/community-support-forum/wordpress-plugins/<?php echo $base_name_slug;?>/?utm_source=<?php echo $base_name_slug;?>&utm_medium=plugin-settings&utm_campaign=product"
-                                       target="_blank" title="[new window]">Support Forums</a>
-
-                                        <!-- |
-										<a href="//docs.google.com/viewer?url=https%3A%2F%2Fdl.dropboxusercontent.com%2Fs%2Fwz83vm9841lz3o9%2FOrbisius_LikeGate_Documentation.pdf" target="_blank">Documentation</a>-->
-                                </span>
+                                        <a href="<?php echo $product_page_url; ?>" target="_blank" title="[new window]">Product Page</a>
+                                        |
+                                        <a href="<?php echo esc_url("https://orbisius.com/forums/forum/community-support-forum/wordpress-plugins/$base_name_slug?utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product");?>"
+                                           target="_blank" title="[new window]">Support Forums</a>
+                                    </span>
                                 </h3>
                             </div> <!-- .postbox -->
                             <!-- /Support options -->
@@ -973,7 +970,7 @@ class Orbisius_SEO_Editor_Admin {
                                 <h3><span>Quick Question or Suggestion</span></h3>
                                 <div class="inside">
                                     <div>
-                                        <form method="post" action="<?php echo $quick_form_action; ?>" target="_blank">
+                                        <form method="post" action="<?php echo esc_url($quick_form_action); ?>" target="_blank">
 											<?php
 											global $wp_version;
 											$plugin_data = get_plugin_data(ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
@@ -1025,17 +1022,17 @@ class Orbisius_SEO_Editor_Admin {
 									<?php
 									$plugin_data = get_plugin_data(ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
 									$product_name = trim($plugin_data['Name']);
-									$product_page = trim($plugin_data['PluginURI']);
+									$product_page_url = trim($plugin_data['PluginURI']);
 									$product_descr = trim($plugin_data['Description']);
 									$product_descr_short = substr($product_descr, 0, 50) . '...';
 									$product_descr_short .= ' #WordPress #plugin';
 
 									$base_name_slug = basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
 									$base_name_slug = str_replace('.php', '', $base_name_slug);
-									$product_page .= (strpos($product_page, '?') === false) ? '?' : '&';
-									$product_page .= "utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product";
+									$product_page_url .= (strpos($product_page_url, '?') === false) ? '?' : '&';
+									$product_page_url .= "utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product";
 
-									$product_page_tweet_link = $product_page;
+									$product_page_tweet_link = $product_page_url;
 									$product_page_tweet_link = str_replace('plugin-settings', 'tweet', $product_page_tweet_link);
 									?>
                                     <!-- Twitter: code -->
@@ -1058,7 +1055,7 @@ class Orbisius_SEO_Editor_Admin {
 
                                     <br/>
                                     <span>
-                                    <a href="<?php echo $product_page; ?>" target="_blank" title="[new window]">Product Page</a>
+                                    <a href="<?php echo $product_page_url; ?>" target="_blank" title="[new window]">Product Page</a>
                                     |
                                     <a href="https://orbisius.com/forums/forum/community-support-forum/wordpress-plugins/<?php echo $base_name_slug;?>/?utm_source=<?php echo $base_name_slug;?>&utm_medium=plugin-settings&utm_campaign=product"
                                        target="_blank" title="[new window]">Support Forums</a>
