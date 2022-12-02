@@ -149,7 +149,9 @@ class Orbisius_SEO_Editor_HTML {
         }
 
 		if ($full) {
-			$url = function_exists( 'site_url' ) ? site_url( $req_uri ) : 'https://' . $_SERVER['HTTP_HOST'] . $req_uri;
+			$url = function_exists( 'site_url' )
+				? site_url( $req_uri )
+				: 'https://' . $req_obj->getServerEnv('HTTP_HOST') . $req_uri;
 		}
 
         return $url;
