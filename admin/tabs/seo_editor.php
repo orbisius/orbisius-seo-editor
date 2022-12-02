@@ -193,7 +193,7 @@ if ($is_post) {
     <?php if ($is_post && empty($error_found)) : ?>
 		<div class="postbox">
 			<h3><span>Step 2/2 | Make Changes or Export & Save Changes <?php echo " | Found record(s) : " . count($records); ?>
-                    | Exec time: <?php echo $exec_time; ?>s</span></h3>
+                    | Exec time: <?php echo esc_html($exec_time); ?>s</span></h3>
 			<div class="inside">
 				<div id="app-partners-container">
 					<?php
