@@ -6,6 +6,7 @@ $disclaimer = "Disclaimer: THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF
 $msg = Orbisius_SEO_Editor_Util::msg("Before doing anything, it's always recommended to back up your site using a backup or migration plugin. We try to make our code rock solid and at the same time it's impossible to catch all the bugs, so we have this disclaimer."
                                      . "<br/>" . esc_html($disclaimer) . "<br/>", 0);
 $req_obj = Orbisius_SEO_Editor_Request::getInstance();
+$req_params = $req_obj->get();
 $is_post = $req_obj->isPost();
 
 $admin_obj = Orbisius_SEO_Editor_Admin::getInstance();
@@ -35,16 +36,16 @@ if ($is_post) {
 
 		$ctx['src_seo_plugin'] = $search_items_params['src_seo_plugin'];
 
-		if (!empty($_REQUEST['orbisius_seo_editor_data']) && !empty($_REQUEST['save_changes'])) {
-			if ( ! isset( $_REQUEST['orbisius_seo_editor_nonce'] )
-                 || ! wp_verify_nonce( $_REQUEST['orbisius_seo_editor_nonce'], 'orbisius_seo_editor_form_action' )
+		if (!empty($req_params['orbisius_seo_editor_data']) && !empty($req_params['save_changes'])) {
+			if ( ! isset( $req_params['orbisius_seo_editor_nonce'] )
+                 || ! wp_verify_nonce( $req_params['orbisius_seo_editor_nonce'], 'orbisius_seo_editor_form_action' )
             ) {
 				throw new Exception('Sorry, cannot process. Please refresh the page and try again.');
 			}
 
 			Orbisius_SEO_Editor_Util::extendRunningTime();
 			Orbisius_SEO_Editor_Debug::time( __FILE__ . '_process');
-			$status_rec = Orbisius_SEO_Editor_Util::processRecords($_REQUEST['orbisius_seo_editor_data'], $search_items_params);
+			$status_rec = Orbisius_SEO_Editor_Util::processRecords($req_params['orbisius_seo_editor_data'], $search_items_params);
 
 			$proces_exec_time = Orbisius_SEO_Editor_Debug::time(  __FILE__ . '_process' );
 		}
@@ -197,7 +198,7 @@ if ($is_post) {
 			<div class="inside">
 				<div id="app-partners-container">
 					<?php
-					$select_prods = empty($_REQUEST['orb_woo_pc_i_want_to_select_products']) ? '' : $_REQUEST['orb_woo_pc_i_want_to_select_products'];
+					$select_prods = empty($req_params['orb_woo_pc_i_want_to_select_products']) ? '' : $req_params['orb_woo_pc_i_want_to_select_products'];
 
 					// these keys should match data-price_type variable in each input text
 					$change_opts = array(
