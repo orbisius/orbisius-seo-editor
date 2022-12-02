@@ -81,9 +81,9 @@ class Orbisius_SEO_Editor_HTML {
 
         if (is_null($sel) && !empty($_REQUEST[$name])) {
             $val = $_REQUEST[$name];
-            $val = wp_kses($val, array());
         }
 
+	    $val = wp_kses($val, array());
         $val = trim($val);
         $esc_val = esc_attr($val);
 
