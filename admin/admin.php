@@ -867,7 +867,7 @@ class Orbisius_SEO_Editor_Admin {
                                 <h3><span>Hire Us</span></h3>
                                 <div class="inside">
                                     Hire us to create a plugin/web/mobile app
-                                    <br/><a href="<?php echo url("https://orbisius.com/page/free-quote/?utm_source=". ORBISIUS_SEO_EDITOR_PLUGIN_SLUG . "&utm_medium=plugin-settings&utm_campaign=product");?>
+                                    <br/><a href="<?php echo esc_url("https://orbisius.com/page/free-quote/?utm_source=". ORBISIUS_SEO_EDITOR_PLUGIN_SLUG . "&utm_medium=plugin-settings&utm_campaign=product");?>
                                             title="If you want a custom web/mobile app/plugin developed contact us. This opens in a new window/tab"
                                             class="button-primary" target="_blank">Get a Free Quote</a>
                                 </div> <!-- .inside -->
