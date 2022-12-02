@@ -627,7 +627,9 @@ class Orbisius_SEO_Editor_Util {
 			$cls = empty($status) ? 'app_error error' : 'app_success success';
 		}
 
+		$msg = str_ireplace(['<br/>', '<br>' ], '__ESC_BR__', $msg);
 		$msg_esc = esc_html($msg);
+		$msg_esc = str_ireplace('__ESC_BR__', '<br/>', $msg_esc);
 		$str = "<div id='$id-notice' class='$cls' style='$inline_css'><strong>$msg_esc</strong></div>";
 
 		return $str;
