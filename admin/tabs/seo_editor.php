@@ -211,7 +211,7 @@ if ($is_post) {
 						$select_prods, $change_opts, 'class="hide-if-js"');
 					?>
 
-					<?php echo esc_html($buff); ?>
+					<?php echo $buff; ?>
 				</div>
 			</div> <!-- .inside -->
 		</div> <!-- .postbox -->
