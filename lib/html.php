@@ -65,6 +65,7 @@ class Orbisius_SEO_Editor_HTML {
     }
 
     /**
+     * Outputs a text box or a text area (depending of the attrib contains textarea keyword).
      * Orbisius_SEO_Editor_HTML::text('');
      *
      * @param string $name
@@ -86,11 +87,15 @@ class Orbisius_SEO_Editor_HTML {
         $val = trim($val);
         $esc_val = esc_attr($val);
 
+		// allow these characters as they are inline attribs class='xyz'
+	    // calling esc_attr(); puts more quotes
+	    $attr_esc = preg_replace('#[^\s\w\-\=\'\"]+#si', '', $attr);
+
         if (stripos($attr, 'textarea') === false) {
-            $html = "<input type='text' name='$esc_name' id='$esc_id' $attr value='$esc_val' />\n";
+            $html = "<input type='text' name='$esc_name' id='$esc_id' value='$esc_val' $attr_esc />\n";
         } else {
-            $attr = str_replace('textarea', '', $attr);
-            $html = "<textarea name='$esc_name' id='$esc_id' $attr>$esc_val</textarea>\n";
+	        $attr_esc = str_replace('textarea', '', $attr);
+            $html = "<textarea name='$esc_name' id='$esc_id' $attr_esc>$esc_val</textarea>\n";
         }
 
         return $html;
