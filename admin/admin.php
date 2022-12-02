@@ -284,10 +284,10 @@ class Orbisius_SEO_Editor_Admin {
 	 * Adds admin bar items for easy access to the theme creator and editor
 	 */
 	function addLinksToWPAdminBar() {
-		$this->addNodeToWPAdminBar('Orbisius SEO Editor', esc_url( Orbisius_SEO_Editor_Util::getPageLink('editor') ) );
-		$this->addNodeToWPAdminBar('Editor', esc_url( Orbisius_SEO_Editor_Util::getPageLink('editor'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN) );
-		$this->addNodeToWPAdminBar('Settings', esc_url( Orbisius_SEO_Editor_Util::getPageLink('settings'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN) );
-		$this->addNodeToWPAdminBar('Support', esc_url( Orbisius_SEO_Editor_Util::getPageLink('support'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN) );
+		$this->addNodeToWPAdminBar('Orbisius SEO Editor', Orbisius_SEO_Editor_Util::getPageLink('editor'));
+		$this->addNodeToWPAdminBar('Editor', Orbisius_SEO_Editor_Util::getPageLink('editor'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN );
+		$this->addNodeToWPAdminBar('Settings', Orbisius_SEO_Editor_Util::getPageLink('settings'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN );
+		$this->addNodeToWPAdminBar('Support', Orbisius_SEO_Editor_Util::getPageLink('support'), ORBISIUS_SEO_EDITOR_BASE_PLUGIN );
 	}
 
 	/**
