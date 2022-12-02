@@ -173,7 +173,7 @@ if ($is_post) {
 		</div> <!-- .inside -->
 	</div> <!-- .postbox -->
 
-	<div><?php echo $msg;?></div>
+	<div><?php echo $msg; ?></div>
 
 	<?php if (!empty($status_rec['work_log'])) : ?>
         <div class="updated"><p>
@@ -211,7 +211,7 @@ if ($is_post) {
 						$select_prods, $change_opts, 'class="hide-if-js"');
 					?>
 
-					<?php echo $buff; ?>
+					<?php echo esc_html($buff); ?>
 				</div>
 			</div> <!-- .inside -->
 		</div> <!-- .postbox -->
