@@ -627,7 +627,8 @@ class Orbisius_SEO_Editor_Util {
 			$cls = empty($status) ? 'app_error error' : 'app_success success';
 		}
 
-		$str = "<div id='$id-notice' class='$cls' style='$inline_css'><strong>$msg</strong></div>";
+		$msg_esc = esc_html($msg);
+		$str = "<div id='$id-notice' class='$cls' style='$inline_css'><strong>$msg_esc</strong></div>";
 
 		return $str;
 	}
