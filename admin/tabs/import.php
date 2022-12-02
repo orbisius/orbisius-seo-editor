@@ -69,7 +69,6 @@ try {
         $skipped   = 0;
         $successes = 0;
 
-
 		Orbisius_SEO_Editor_Util::extendRunningTime();
 		$status_rec = Orbisius_SEO_Editor_Util::processRecords($data, $filter_options);
 
