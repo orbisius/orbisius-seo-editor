@@ -129,23 +129,23 @@ class Orbisius_SEO_Editor_HTML {
     }
 
     /**
-     *
-     * Appends a parameter to an url; uses '?' or '&'
-     * It's the reverse of parse_str().
-     *
+     * Gets the request url without the params
      * @param string $url
      * @param array $params
      * @return string
      */
-    public static function get_req_uri($full = 1, $keep_params = 0) {
-        $req_uri = $_SERVER['REQUEST_URI'];
+    public static function getReqUri($full = 1, $keep_params = 0) {
+	    $req_obj = Orbisius_SEO_Editor_Request::getInstance();
+	    $req_uri = $req_obj->getServerEnv('REQUEST_URI');
 
         if (empty($keep_params)) {
             $req_uri = preg_replace('#\?.*#si', '', $req_uri);
             $req_uri = preg_replace('#\#.*#si', '', $req_uri);
         }
 
-        $url = function_exists('site_url') ? site_url($req_uri) : 'https://' . $_SERVER['HTTP_HOST'] . $req_uri;
+		if ($full) {
+			$url = function_exists( 'site_url' ) ? site_url( $req_uri ) : 'https://' . $_SERVER['HTTP_HOST'] . $req_uri;
+		}
 
         return $url;
     }
