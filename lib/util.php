@@ -124,9 +124,10 @@ class Orbisius_SEO_Editor_Util {
 		 );*/
 
 		$help_info_export = "You can export the current search into CSV (excel) and exit it that way. After you are done import the modified csv file.";
-		$export_btn_html = "<span title='$help_info_export'><button type='submit' id='orbisius_seo_editor_csv_export' "
+		$help_info_export_esc = esc_attr($help_info_export);
+		$export_btn_html = "<span title='$help_info_export_esc'><button type='submit' id='orbisius_seo_editor_csv_export' "
 		                   . "name='orbisius_seo_editor_csv_export' value='orbisius_seo_editor_csv_export' class='orb_seo_ed_save_button button'>"
-		                   . __('Export (CSV)', 'aaa' ) . "</button>\n</span>";
+		                   . __('Export (CSV)' ) . "</button>\n</span>";
 
 		$save_changes_btn_html = "<div style='float:right;margin-top:-30px;margin-bottom:10px;'><button type='submit' id='save_changes' "
 		                         . "name='save_changes' value='save_changes' class='orb_seo_ed_save_button button-primary'>"
@@ -255,7 +256,7 @@ class Orbisius_SEO_Editor_Util {
 
 				$ctx = array_replace_recursive($ctx, $post_rec);
 
-				$buff .= "<tr class='$cls' data-record_id='$id'>\n";
+				$buff .= "<tr class='$cls' data-record_id='$id_esc'>\n";
 				$columns = apply_filters('orbisius_seo_editor_filter_body_cols', $columns, $ctx);
 
 				if (!empty($post_rec['hash'])) {
@@ -273,12 +274,13 @@ class Orbisius_SEO_Editor_Util {
 					}
 
 					$val = empty($columns[$key]) ? '' : $columns[$key];
+					$key_esc = esc_attr($key);
 
 					if ($key == 'id' || $key == 'id_col' || $key == 'post_title') {
 						$val_html = $val;
 					} else {
 						$val_html = Orbisius_SEO_Editor_HTML::text(
-							"orbisius_seo_editor_data[$id_esc][$key]",
+							"orbisius_seo_editor_data[$id_esc][$key_esc]",
 							$val,
 							"textarea class='widefat' "
 						);
