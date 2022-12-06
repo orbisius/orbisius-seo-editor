@@ -212,7 +212,8 @@ if ($is_post) {
 					?>
 
 					<?php echo wp_kses_post($buff); ?>
-				</div>
+                    <style>td.id_col, td.thumbnail {width:17%;}</style>
+                </div>
 			</div> <!-- .inside -->
 		</div> <!-- .postbox -->
 
