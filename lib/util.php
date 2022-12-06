@@ -294,8 +294,6 @@ class Orbisius_SEO_Editor_Util {
 			} // foreach
 
 			$buff .= "</tbody></table>\n";
-			$buff .= "<style>td.thumbnail {width:10%;}</style>\n";
-
 			$buff .= $save_changes_btn_bottom_html;
 		} else {
 			$buff .= "<div class='app_no_results orbisius_seo_editor_notice'>Nothing found.</div>";
