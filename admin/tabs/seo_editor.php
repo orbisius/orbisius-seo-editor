@@ -211,7 +211,7 @@ if ($is_post) {
 						$select_prods, $change_opts, 'class="hide-if-js"');
 					?>
 
-					<?php echo $buff; ?>
+					<?php echo wp_kses_post($buff); ?>
 				</div>
 			</div> <!-- .inside -->
 		</div> <!-- .postbox -->
