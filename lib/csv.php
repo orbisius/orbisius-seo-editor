@@ -69,12 +69,29 @@ Class Orbisius_SEO_Editor_CSV {
 
                // No header row OR if the data contains header row somewhere instead of data
                if (empty($header) || count(array_diff($header, $row)) == 0) {
-				   if ($flags & self::FORMAT_HEADER_COLS) {
-					   foreach ( $row as $key => & $val ) {
+                   // @todo validate_heading_row;
+                   // the rows must be alpha numeric + underscore; no int;
+                   // correct cols must match be the same elements as the array i.e. all must be correct
+                   $valid_cols = 0;
+                   $correct_cols_regex = '#^\s*[a-z]+[\w\-]+\s*$#si';
+
+                   foreach ( $row as $idx => $val ) {
+                       if (preg_match($correct_cols_regex, $val)) {
+                           $valid_cols++;
+                       }
+                   }
+
+                   if ($valid_cols != count($row)) {
+                       throw new Exception("The heading col is missing or invalid");
+                   }
+
+                   if ($flags & self::FORMAT_HEADER_COLS) {
+					   foreach ( $row as $idx => $val ) {
 						   $val = strtolower( $val );
 						   $val = preg_replace( '#[^\w]#si', '_', $val );
 						   $val = preg_replace( '#\_+#si', '_', $val );
 						   $val = trim( $val, ' _' );
+                           $row[$idx] = $val;
 					   }
 				   }
 
