@@ -81,7 +81,8 @@ try {
 
 		$buff = '';
 		$buff .= Orbisius_SEO_Editor_Util::msg("Done (Exec time: {$exec_time_esc}s)", 1);
-		$buff .= "<textarea class='widefat' rows='4'>" . join("\n", esc_html($status_rec['work_log'])) . "</textarea>";
+        $work_log_as_str = join("\n", $status_rec['work_log']);
+		$buff .= "<textarea class='widefat' rows='4'>" . esc_attr($work_log_as_str) . "</textarea>";
         $msg .= $buff;
     }
 } catch (Exception $e) {

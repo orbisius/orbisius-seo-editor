@@ -74,6 +74,7 @@ Svetoslav Marinov (Slavi) | <a href="https://orbisius.com" title="Custom Web Pro
 
 = 1.0.1 =
 * Validate CSV columns in Import. They have to be there.
+* Fixed warnings after import
 
 = 1.0.0 =
 * Initial release
