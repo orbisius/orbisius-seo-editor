@@ -70,7 +70,7 @@ Class Orbisius_SEO_Editor_CSV {
                // No header row OR if the data contains header row somewhere instead of data
                if (empty($header) || count(array_diff($header, $row)) == 0) {
                    // Validate heading row and in case the user had decided to remove it for some reason
-                   // the rows must be alpha numeric + underscore and may contain numbers
+                   // the rows must be alphanumeric + underscore and may contain numbers
                    // correct cols must match be the same elements as the array i.e. all must be correct
                    $valid_cols = 0;
                    $correct_cols_regex = '#^\s*[a-z]+[\w\-]+\s*$#si';
