@@ -84,7 +84,7 @@ Class Orbisius_SEO_Editor_CSV {
                    }
 
                    if ($valid_cols != count($row)) {
-                       throw new Exception("The heading col is missing or invalid");
+                       throw new Exception("The heading row is missing or invalid. It is necessary as we use it to map fields.");
                    }
 
                    if ($flags & self::FORMAT_HEADER_COLS) {
