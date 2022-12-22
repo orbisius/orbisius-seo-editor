@@ -644,9 +644,11 @@ class Orbisius_SEO_Editor_Util {
 	static public function getPageLink($page_type) {
 		if ($page_type == 'settings') {
 			$rel_path = 'options-general.php?page=' . plugin_basename(ORBISIUS_SEO_EDITOR_BASE_PLUGIN);
-		} elseif ($page_type == 'support') {
-			return 'https://orbisius.com/support/';
-		} elseif ($page_type == 'editor') {
+		} elseif ($page_type == 'import') {
+            $rel_path = 'tools.php?page=orbisius_seo_editor_action_page&tab=import';
+        } elseif ($page_type == 'support') {
+            return 'https://orbisius.com/support/';
+        } elseif ($page_type == 'editor') {
 			$rel_path = 'tools.php?page=orbisius_seo_editor_action_page';
 		} else {
 			$rel_path = 'tools.php?page=orbisius_seo_editor_action_page';
