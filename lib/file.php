@@ -101,7 +101,7 @@ class Orbisius_SEO_Editor_File {
                                class="orbisius_seo_editor_file" accept=".csv"
                                value="" />
 
-                        <button type='submit' value='Upload' id="orbisius_seo_editor_upload_form_submit_btn"
+                        <button type='button' value='Upload' id="orbisius_seo_editor_upload_form_submit_btn"
                                 name="orbisius_seo_editor_upload_form_submit_btn"
                                 class="button orbisius_seo_editor_file_form_submit_btn
                                 orbisius_seo_editor_upload_form_submit_btn">Select a file (CSV)</button>
