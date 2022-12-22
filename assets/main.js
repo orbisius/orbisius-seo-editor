@@ -53,7 +53,8 @@ jQuery(document).ready(function($) {
 
         if (matches) {
             console.log("orbisius_seo_editor: detected plugin: " + matches[1]);
-            $('#orbisius_seo_editor_search_target_seo_plugin').val(matches[1]);
+            // We call trigger change so select2 can update the value too
+            $('#orbisius_seo_editor_search_target_seo_plugin').val(matches[1]).trigger('change');
         }
     });
 
