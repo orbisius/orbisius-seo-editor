@@ -118,6 +118,7 @@ class Orbisius_SEO_Editor_File {
             .orbisius_seo_editor_hide {
                 display: none;
             }
+
 			.custum_file_upload_btn_wrapper {
 				position: relative;
 				overflow: hidden;
