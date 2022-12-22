@@ -39,6 +39,7 @@ jQuery(document).ready(function($) {
         let sel_seo = $('#orbisius_seo_editor_search_target_seo_plugin').val();
 
         if (sel_seo !== '') { // if already select don't touch it
+            console.log("orbisius_seo_editor: source SEO plugin selected so don't parse the selected file for plugin");
             return true;
         }
 
@@ -51,6 +52,7 @@ jQuery(document).ready(function($) {
         const matches = file_base_name.match(regex);
 
         if (matches) {
+            console.log("orbisius_seo_editor: detected plugin: " + matches[1]);
             $('#orbisius_seo_editor_search_target_seo_plugin').val(matches[1]);
         }
     });
