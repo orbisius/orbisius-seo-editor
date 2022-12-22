@@ -46,7 +46,8 @@ jQuery(document).ready(function($) {
 
         // developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match
         // If the g flag is used, all results matching the complete regular expression will be returned, but capturing groups are not included.
-        const regex = /seo_plugin[_\-]+(\w+)/i; // we can't use : or other special chars because it's a filename
+        // important!: unly use \w in the group because we have a separator - and addons are lowercase and underscore as sep
+        const regex = /seo_plugin[_\-]+([\w]+)/i; // we can't use : or other special chars because it's a filename
         const matches = file_base_name.match(regex);
 
         if (matches) {
