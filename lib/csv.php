@@ -38,34 +38,46 @@ Class Orbisius_SEO_Editor_CSV {
            return false;
        }
 
-       $data = array();
-       $header = array();
+       $data = [];
+       $header = [];
 
-       // In some cases (Windows/Linux) the line endings are not read correctly so we'll hint php to detect the line endings.
-	   $old_auto_detect_line_endings_flag = ini_get("auto_detect_line_endings");
-	   ini_set("auto_detect_line_endings", true);
+       try {
+           // In some cases (Windows/Linux) the line endings are not read correctly so we'll hint php to detect the line endings.
+           $old_auto_detect_line_endings_flag = ini_get("auto_detect_line_endings");
+           ini_set("auto_detect_line_endings", true);
 
-       if (($handle = fopen($filename, 'rb')) !== false) {
+           $handle = fopen($filename, 'rb');
+
+           if (empty($handle)) {
+               trigger_error(sprintf(
+                   "Cannot open file [%s] for reading",
+                   esc_attr(basename($filename))
+               ),
+                   E_USER_WARNING
+               );
+               return false;
+           }
+
            // we just need a read lock
            flock($handle, LOCK_SH);
 
            while (($row = fgetcsv($handle, $this->buff_size, $this->delimiter)) !== false) {
-	           if (empty($row)) {
-		           continue;
-	           }
+               if (empty($row)) {
+                   continue;
+               }
 
-	           $row = array_map('trim', $row );
+               $row = array_map('trim', $row);
 
-	           if (empty($row)) {
-		           continue;
-	           }
+               if (empty($row)) {
+                   continue;
+               }
 
-	           // Empty lines could produce empty columns
-	           $row_alt_empty_check = array_filter($row);
+               // Empty lines could produce empty columns
+               $row_alt_empty_check = array_filter($row);
 
-	           if (empty($row_alt_empty_check)) {
-		           continue;
-	           }
+               if (empty($row_alt_empty_check)) {
+                   continue;
+               }
 
                // No header row OR if the data contains header row somewhere instead of data
                if (empty($header) || count(array_diff($header, $row)) == 0) {
@@ -75,7 +87,7 @@ Class Orbisius_SEO_Editor_CSV {
                    $valid_cols = 0;
                    $correct_cols_regex = '#^\s*[a-z]+[\w\-]+\s*$#si';
 
-                   foreach ( $row as $val ) {
+                   foreach ($row as $val) {
                        if (!preg_match($correct_cols_regex, $val)) {
                            break; // do need to check others since at least one didn't validate.
                        }
@@ -88,26 +100,28 @@ Class Orbisius_SEO_Editor_CSV {
                    }
 
                    if ($flags & self::FORMAT_HEADER_COLS) {
-					   foreach ( $row as $idx => $val ) {
-						   $val = strtolower( $val );
-						   $val = preg_replace( '#[^\w]#si', '_', $val );
-						   $val = preg_replace( '#\_+#si', '_', $val );
-						   $val = trim( $val, ' _' );
+                       foreach ($row as $idx => $val) {
+                           $val = strtolower($val);
+                           $val = preg_replace('#[^\w]#si', '_', $val);
+                           $val = preg_replace('#\_+#si', '_', $val);
+                           $val = trim($val, ' _');
                            $row[$idx] = $val;
-					   }
-				   }
+                       }
+                   }
 
                    $header = $row;
                } else {
                    $data[] = @array_combine($header, $row);
                }
            }
+       } finally {
+           ini_set("auto_detect_line_endings", $old_auto_detect_line_endings_flag); // restore previous value
 
-           flock($handle, LOCK_UN);
-           fclose($handle);
+           if (!empty($handle)) {
+               flock($handle, LOCK_UN);
+               fclose($handle);
+           }
        }
-
-	   ini_set("auto_detect_line_endings", $old_auto_detect_line_endings_flag); // restore previous value
 
 	   return $data;
 
@@ -143,8 +157,8 @@ Class Orbisius_SEO_Editor_CSV {
           'cur_date' => '2014-06-09 10:59:37',
         ),
       )
-        */
-   }
+      */
+    }
 
     /**
      * This outputs data in a file or in the browser (if file param is passed).
