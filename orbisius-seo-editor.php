@@ -3,7 +3,7 @@
 Plugin Name: Orbisius SEO Editor
 Plugin URI: https://orbisius.com/products/wordpress-plugins/orbisius-seo-editor/
 Description: Allows you to bulk update meta titles, descriptions summary of pages, posts and WooCommerce products
-Version: 1.0.1
+Version: 1.0.2
 Author: Svetoslav Marinov (Slavi)
 Author URI: https://orbisius.com
 */

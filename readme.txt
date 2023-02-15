@@ -5,7 +5,7 @@ Tags: seo,seo plugin,seo,bulk edit seo,wpseo,yoast seo,yoast,autodescription,ran
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 
 Orbisius SEO editor is (almost) a universal SEO editor that allows you to edit meta titles and descriptions regardless of the SEO plugin or theme you’re currently using
