@@ -72,6 +72,9 @@ Svetoslav Marinov (Slavi) | <a href="https://orbisius.com" title="Custom Web Pro
 
 == Changelog ==
 
+= 1.0.2 =
+* Added focus keyword to the WordPress SEO
+
 = 1.0.1 =
 * Validate CSV columns in Import. They have to be there.
 * Fixed warnings after import
