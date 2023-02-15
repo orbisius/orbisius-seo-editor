@@ -16,5 +16,6 @@ class Orbisius_SEO_Editor_Plugin_Addon_wpseo extends Orbisius_SEO_Editor_Plugin_
 	protected $meta_mapping = [
 		'meta_title' => '_yoast_wpseo_title',
 		'meta_description' => '_yoast_wpseo_metadesc',
+        'focus_keyword' => '_yoast_wpseo_focuskw',
 	];
 }
