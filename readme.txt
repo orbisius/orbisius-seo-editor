@@ -72,6 +72,11 @@ Svetoslav Marinov (Slavi) | <a href="https://orbisius.com" title="Custom Web Pro
 
 == Changelog ==
 
+= 1.0.3 =
+* Tested with latest WP
+* Updated csv parsing buffer to 2k
+* Fixes
+
 = 1.0.2 =
 * Added focus keyword to the WordPress SEO
 
