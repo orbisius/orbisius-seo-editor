@@ -1,7 +1,7 @@
 === Orbisius SEO Editor ===
 Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
-Tags: seo,seo plugin,seo,bulk edit seo,wpseo,yoast seo,yoast,autodescription,rank-math,twitter card,meta title, meta description, woocommerce seo,wc seo,seo plugin,WordPress SEO,SEO Rank Math import, WordPress SEO import
+Tags: seo,seo editor plugin,bulk edit seo,seo editor,wordpress seo
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 5.6
