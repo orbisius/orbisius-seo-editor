@@ -5,7 +5,7 @@ Tags: seo,seo editor plugin,bulk edit seo,seo editor,wordpress seo
 Requires at least: 5.0
 Tested up to: 6.6
 Requires PHP: 5.6
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 
 Orbisius SEO editor is (almost) a universal SEO editor that allows you to bulk edit meta titles and/or descriptions of supported WordPress SEO plugins
@@ -73,6 +73,9 @@ Svetoslav Marinov (Slavi) | <a href="https://orbisius.com" title="Custom Web Pro
 * Then either save the changes or export to CSV
 
 == Changelog ==
+
+= 1.0.4 =
+* Made fixes to plugin's readme file (fewer tags, shorter description)
 
 = 1.0.3 =
 * Tested with latest WP
