@@ -59,8 +59,10 @@ Svetoslav Marinov (Slavi) | <a href="https://orbisius.com" title="Custom Web Pro
 
 == Installation ==
 
-1. Unzip the package, and upload `orbisius-seo-editor` to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
+1. Go to WP-Admin > Plugins > Add New
+1. Upload the plugin's zip the package or search for SEO Editor
+1. Activate the plugin through the 'Plugins' menu in WordPress
+1. To go Tools > SEO Editor
 
 == Frequently Asked Questions ==
 
