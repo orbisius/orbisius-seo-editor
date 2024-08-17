@@ -78,6 +78,7 @@ Svetoslav Marinov (Slavi) | <a href="https://orbisius.com" title="Custom Web Pro
 * Tested with latest WP
 * Fixed Deprecated: auto_detect_line_endings is deprecated
 * Updated csv parsing buffer to 2k
+* Skip the first 5 non-empty rows if they have X or fewer columns. Sometimes people enter content before the heading columns.
 * Fixes
 
 = 1.0.2 =

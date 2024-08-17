@@ -109,6 +109,12 @@ class Orbisius_SEO_Editor_CSV
                     }
 
                     if ($valid_cols != count($row)) {
+                        // Skip the first 5 non-empty rows if they have X or fewer columns.
+                        // Sometimes people enter content before the heading columns
+                        if ($row_idx <= 5 && $valid_cols <= 2) {
+                            continue;
+                        }
+
                         throw new Exception("The heading row, which must include id, title etc, is missing or invalid. It is necessary as we use it to map fields.");
                     }
 
