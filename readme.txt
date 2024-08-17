@@ -8,7 +8,7 @@ Requires PHP: 5.6
 Stable tag: 1.0.3
 License: GPLv2 or later
 
-Orbisius SEO editor is (almost) a universal SEO editor that allows you to edit meta titles and descriptions regardless of the SEO plugin or theme you’re currently using
+Orbisius SEO editor is (almost) a universal SEO editor that allows you to bulk edit meta titles and/or descriptions of supported WordPress SEO plugins
 
 == Description ==
 
