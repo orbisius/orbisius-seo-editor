@@ -10,7 +10,7 @@
  * @author Svetoslav Marinov (SLAVI) | https://orbisius.com
  */
 Class Orbisius_SEO_Editor_CSV {
-    protected $buff_size = 1024;
+    protected $buff_size = 2048;
     protected $delimiter = ',';
 	const APPEND = 2;
 	const DO_EXIT = 4;
@@ -30,7 +30,7 @@ Class Orbisius_SEO_Editor_CSV {
     * Reads a CSV file and returns array of arrays.
     * The header rows are not returned. We can extract them by getting the keys of the first array element.
     * @link https://gist.github.com/385876
-    * @return array / false on error
+    * @return array|false on error
     */
    public function read($filename = '', $flags = 0) {
        if (!file_exists($filename) || !is_readable($filename)) {
@@ -42,7 +42,7 @@ Class Orbisius_SEO_Editor_CSV {
        $header = [];
 
        try {
-           // In some cases (Windows/Linux) the line endings are not read correctly so we'll hint php to detect the line endings.
+           // In some cases (Windows/Linux) the line endings are not read correctly, so we'll hint php to detect the line endings.
            $old_auto_detect_line_endings_flag = ini_get("auto_detect_line_endings");
            ini_set("auto_detect_line_endings", true);
 
@@ -61,7 +61,13 @@ Class Orbisius_SEO_Editor_CSV {
            // we just need a read lock
            flock($handle, LOCK_SH);
 
+           // Thsi is
+           $row_num = 0; // all rows including the empty ones
+           $row_idx = 0;
+
            while (($row = fgetcsv($handle, $this->buff_size, $this->delimiter)) !== false) {
+               $row_num++;
+
                if (empty($row)) {
                    continue;
                }
@@ -78,6 +84,8 @@ Class Orbisius_SEO_Editor_CSV {
                if (empty($row_alt_empty_check)) {
                    continue;
                }
+
+               $row_idx++;
 
                // No header row OR if the data contains header row somewhere instead of data
                if (empty($header) || count(array_diff($header, $row)) == 0) {
@@ -96,7 +104,7 @@ Class Orbisius_SEO_Editor_CSV {
                    }
 
                    if ($valid_cols != count($row)) {
-                       throw new Exception("The heading row is missing or invalid. It is necessary as we use it to map fields.");
+                       throw new Exception("The heading row, which must include id, title etc, is missing or invalid. It is necessary as we use it to map fields.");
                    }
 
                    if ($flags & self::FORMAT_HEADER_COLS) {
@@ -107,6 +115,16 @@ Class Orbisius_SEO_Editor_CSV {
                            $val = trim($val, ' _');
                            $row[$idx] = $val;
                        }
+                   }
+
+                   // let's skip any textual rows before the headers
+                   if ($row_idx <= 5 && count($row) <= 3) {
+                       continue;
+                   }
+
+                   // so several rows and not enough header cols this is an error
+                   if ($row_idx > 5 && count($row) <= 3) {
+                       throw new Exception("The heading row has fewer than expected fields It is necessary as we use it to map fields.");
                    }
 
                    $header = $row;
