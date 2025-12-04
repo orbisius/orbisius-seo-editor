@@ -129,7 +129,7 @@ class Orbisius_SEO_Editor_Util {
 		                   . "name='orbisius_seo_editor_csv_export' value='orbisius_seo_editor_csv_export' class='orb_seo_ed_save_button button'>"
 		                   . __('Export (CSV)' ) . "</button>\n</span>";
 
-		$save_changes_btn_html = "<div style='float:right;margin-top:-30px;margin-bottom:10px;'><button type='submit' id='save_changes' "
+		$save_changes_btn_html = "<div style='text-align:right;margin-bottom:10px;'><button type='submit' id='save_changes' "
 		                         . "name='save_changes' value='save_changes' class='orb_seo_ed_save_button button-primary'>"
 		                         . __('Save Changes', 'wordpress' ) . "</button>\n | $export_btn_html</div>";
 
@@ -149,11 +149,11 @@ class Orbisius_SEO_Editor_Util {
 				. "title='Read Orbisius blog post on how to increase max_input_vars limit (opens in a new tab/window)'>How to increase it</a>\n";
 		$buff .= "</div>\n";*/
 
-		$buff .= "<div class='orbisius_seo_editor_container'>\n";
 		$render_id_col = !empty($filters['render_id_col']); //$opts['render_id_col'] != 'none';
 
 		if (!empty($records)) {
 			$buff .= $save_changes_btn_html;
+			$buff .= "<div class='orbisius_seo_editor_container'>\n";
 			$buff .= "<table class='orbisius_seo_editor_table widefat'>\n";
 			$buff .= "<thead><tr>\n";
 
@@ -185,9 +185,8 @@ class Orbisius_SEO_Editor_Util {
 			$header_columns = apply_filters('orbisius_seo_editor_filter_header_cols', $header_columns);
 
 			// We'll generate header columns and each will have a class
-			// e.g. product-price
 			foreach ($header_columns as $key => $col) {
-				$cls = $key;
+				$cls = 'orbisius_seo_editor_col col_' . $key;
 				$col_esc = esc_html($col);
 				$buff .= "\t<th class='$cls'>$col_esc</th>\n";
 			}
@@ -286,7 +285,7 @@ class Orbisius_SEO_Editor_Util {
 						);
 					}
 
-					$cls = sanitize_title($key);
+					$cls = 'orbisius_seo_editor_col col_' . $key;
 					$buff .= "\t<td class='$cls'>$val_html</td>\n";
 				}
 
@@ -294,12 +293,11 @@ class Orbisius_SEO_Editor_Util {
 			} // foreach
 
 			$buff .= "</tbody></table>\n";
+			$buff .= "</div>\n";
 			$buff .= $save_changes_btn_bottom_html;
 		} else {
 			$buff .= "<div class='app_no_results orbisius_seo_editor_notice'>Nothing found.</div>";
 		}
-
-		$buff .= "</div>\n";
 
 		return $buff;
 	}

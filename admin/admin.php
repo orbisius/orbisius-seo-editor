@@ -98,15 +98,42 @@ class Orbisius_SEO_Editor_Admin {
 	        // to the specific target plugin we have.
 	        $supported_addon_meta_fields = apply_filters('orbisius_seo_editor_filter_supported_addon_fields', [], []);
 	        $keys = array_keys($supported_addon_meta_fields);
-	        $meta_fields = empty($supported_addon_meta_fields)
-                ? [ '' => 'Nothing found', ]
-                : [ '' => '== Select ==', 'meta_title_and_description' => 'Meta Title and Description' ] + array_combine($keys, $keys);
+
+	        // Base field options - these are special options that appear before the addon-specific fields
+	        // PRO addon or other plugins can filter this to add/modify options
+	        $base_field_options = [
+		        '' => '== Select ==',
+		        '__all__' => 'All Fields',
+		        'meta_title_and_description' => 'Meta Title and Description',
+	        ];
+
+	        $base_field_options = apply_filters('orbisius_seo_editor_filter_base_field_options', $base_field_options, $filter_options);
+
+	        if (empty($supported_addon_meta_fields)) {
+		        $meta_fields = [ '' => 'Nothing found', ];
+	        } else {
+		        $addon_fields = array_combine($keys, $keys);
+		        $meta_fields = $base_field_options + $addon_fields;
+	        }
+
 	        $meta_fields = Orbisius_SEO_Editor_Util::toHumanReadable($meta_fields);
 	        $src_field = $filter_options['src_field'];
 
             // Is this a supported field? if no do not return it.
-            if (!empty($src_field) && empty($meta_fields[$src_field])) {
-	            $src_field = '';
+            // Handle both single value and array
+            if (!empty($src_field)) {
+	            $src_field_arr = (array) $src_field;
+	            $valid_fields = [];
+
+	            foreach ($src_field_arr as $field) {
+		            if (empty($meta_fields[$field])) {
+			            continue;
+		            }
+
+		            $valid_fields[] = $field;
+	            }
+
+	            $src_field = empty($valid_fields) ? '' : $valid_fields;
             }
 
 	        $res_obj->status = 1;
@@ -1283,6 +1310,13 @@ class Orbisius_SEO_Editor_Admin {
 		if (!empty($filter_options['src_field'])) {
 			$cols = (array) $filter_options['src_field'];
 
+			// Handle '__all__' - get all supported fields from the addon
+			if (in_array('__all__', $cols)) {
+				$supported_addon_meta_fields = apply_filters('orbisius_seo_editor_filter_supported_addon_fields', [], []);
+				$cols = array_keys($supported_addon_meta_fields);
+			}
+
+			// Handle 'meta_title_and_description' - expand to individual fields
 			if (empty($cols) || in_array('meta_title_and_description', $cols)) {
 				$cols = array_merge($cols, [
 					'meta_title',
