@@ -295,8 +295,16 @@ class Orbisius_SEO_Editor_Admin {
 		wp_enqueue_style(
 			'orbisius_seo_editor_shared_select2',
 			plugins_url( $file_rel, ORBISIUS_SEO_EDITOR_BASE_PLUGIN ),
-			filemtime( plugin_dir_path( ORBISIUS_SEO_EDITOR_BASE_PLUGIN ) . $file_rel ),
-			true
+			[],
+			filemtime( plugin_dir_path( ORBISIUS_SEO_EDITOR_BASE_PLUGIN ) . $file_rel )
+		);
+
+		$file_rel = '/assets/main.css';
+		wp_enqueue_style(
+			'orbisius_seo_editor',
+			plugins_url( $file_rel, ORBISIUS_SEO_EDITOR_BASE_PLUGIN ),
+			['orbisius_seo_editor_shared_select2'],
+			filemtime( plugin_dir_path( ORBISIUS_SEO_EDITOR_BASE_PLUGIN ) . $file_rel )
 		);
 
 		$ctx = [];
