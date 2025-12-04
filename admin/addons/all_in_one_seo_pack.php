@@ -1,12 +1,12 @@
 <?php
 
-$obj = new Orbisius_SEO_Editor_Plugin_Addon_all_in_one_seo_pack();
+$obj = new Orbisius_SEO_Editor_Plugin_Addon_All_In_One_Seo_Pack();
 $obj->init();
 
 /**
  * @author Svetoslav Marinov (SLAVI) | https://orbisius.com
  */
-class Orbisius_SEO_Editor_Plugin_Addon_all_in_one_seo_pack extends Orbisius_SEO_Editor_Plugin_Addon_Base {
+class Orbisius_SEO_Editor_Plugin_Addon_All_In_One_Seo_Pack extends Orbisius_SEO_Editor_Plugin_Addon_Base {
 	protected $id = 'all_in_one_seo_pack';
 
 	/**

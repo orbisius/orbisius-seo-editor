@@ -1,12 +1,12 @@
 <?php
 
-$obj = new Orbisius_SEO_Editor_Plugin_Addon_wpseo(); // Yoast SEO
+$obj = new Orbisius_SEO_Editor_Plugin_Addon_WP_Seo(); // Yoast SEO
 $obj->init();
 
 /**
  * @author Svetoslav Marinov (SLAVI) | https://orbisius.com
  */
-class Orbisius_SEO_Editor_Plugin_Addon_wpseo extends Orbisius_SEO_Editor_Plugin_Addon_Base {
+class Orbisius_SEO_Editor_Plugin_Addon_WP_Seo extends Orbisius_SEO_Editor_Plugin_Addon_Base {
 	protected $id = 'wp_seo';
 
 	/**

@@ -1,12 +1,12 @@
 <?php
 
-$obj = new Orbisius_SEO_Editor_Plugin_Addon_autodescription(); // The SEO Framework
+$obj = new Orbisius_SEO_Editor_Plugin_Addon_Autodescription(); // The SEO Framework
 $obj->init();
 
 /**
  * @author Svetoslav Marinov (SLAVI) | https://orbisius.com
  */
-class Orbisius_SEO_Editor_Plugin_Addon_autodescription extends Orbisius_SEO_Editor_Plugin_Addon_Base {
+class Orbisius_SEO_Editor_Plugin_Addon_Autodescription extends Orbisius_SEO_Editor_Plugin_Addon_Base {
 	protected $id = 'autodescription';
 
 	/**

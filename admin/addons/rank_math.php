@@ -1,12 +1,12 @@
 <?php
 
-$obj = new Orbisius_SEO_Editor_Plugin_Addon_rank_math();
+$obj = new Orbisius_SEO_Editor_Plugin_Addon_Rank_Math();
 $obj->init();
 
 /**
  * @author Svetoslav Marinov (SLAVI) | https://orbisius.com
  */
-class Orbisius_SEO_Editor_Plugin_Addon_rank_math extends Orbisius_SEO_Editor_Plugin_Addon_Base {
+class Orbisius_SEO_Editor_Plugin_Addon_Rank_Math extends Orbisius_SEO_Editor_Plugin_Addon_Base {
 	protected $id = 'rank_math';
 
 	/**
