@@ -373,36 +373,6 @@ class Orbisius_SEO_Editor_Plugin_Manager {
     }
 
 	/**
-	 * Orbisius_SEO_Editor_Util::calcHash(array( 'title' => 'aaaa' ));
-	 * @param array $data
-	 * @return string
-	 */
-	public static function calcHash( $data ) {
-		$data = (array) $data;
-
-		// we skip hash because if we keep it it will 100% mess with the final hash
-		// we skip src because upon submission we don't send src.
-		// We're skipping file_name from the hash calc because because the user may have only changed the file names
-		// and not the other fields so we'll save some db requests.
-		// We don't need the hash for the file names because we have current file name and the new one
-		$skip_fields = array('hash', 'src', 'file_name', 'new_file_name');
-
-		foreach ($skip_fields as $field) {
-			unset($data[$field]);
-		}
-
-		// Ensure that all variables are strings including ints.
-		// Consistency is key because php's serialize function serializes different variables differently
-		$data = array_map('strval', $data);
-
-		$data = array_filter($data);
-		ksort($data);
-		$hash = sha1(serialize($data));
-
-		return $hash;
-    }
-
-	/**
 	 * Orbisius_SEO_Editor_Media::extract_title(array( 'title' => 'aaaa' ));
 	 * @param array $data
 	 * @return string

@@ -790,7 +790,9 @@ class Orbisius_SEO_Editor_Util {
 		$data = array_map('strval', $data);
 		$data = array_filter($data);
 		ksort($data);
-		$hash = sha1(serialize($data));
+		$data = serialize($data);
+		$hash = sha1($data);
+		$hash = substr($hash, 0, 12);
 
 		return $hash;
 	}
