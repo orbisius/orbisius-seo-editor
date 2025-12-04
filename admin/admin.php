@@ -157,31 +157,27 @@ class Orbisius_SEO_Editor_Admin {
 
 			do_action('orbisius_seo_editor_action_init', $ctx);
 
-			// We need to include this here so load, import, save can work
+			// Load source addon
 			if (!empty($search_items_params['src_seo_plugin'])) {
-				$fmt = $plugin_manager_obj->formatPluginSlug($search_items_params['src_seo_plugin']);
-				$addon_file = ORBISIUS_SEO_EDITOR_BASE_DIR . "/admin/addons/{$fmt}.php";
+				$addon_ctx = [
+					'addon_slug' => $search_items_params['src_seo_plugin'],
+					'type' => 'source',
+					'search_params' => $search_items_params,
+				];
 
-				if (file_exists($addon_file)) {
-					require_once $addon_file;
-				} else {
-					//wp_die('SEO Plugin Process not found: ' . $fmt);
-				}
+				$this->loadAddon($addon_ctx);
 			}
 
-			// We'll load the target addon as well if requested.
-			// The idea is migration. The user may want to copy the meta info from one plugin to another.
-			// Cool, eh?
+			// Load target addon for migration feature
 			if (!empty($search_items_params['target_seo_plugin'])
 			    && $search_items_params['target_seo_plugin'] != $search_items_params['src_seo_plugin']) {
-				$fmt = $plugin_manager_obj->formatPluginSlug($search_items_params['target_seo_plugin']);
-				$addon_file = ORBISIUS_SEO_EDITOR_BASE_DIR . "/admin/addons/{$fmt}.php";
+				$addon_ctx = [
+					'addon_slug' => $search_items_params['target_seo_plugin'],
+					'type' => 'target',
+					'search_params' => $search_items_params,
+				];
 
-				if (file_exists($addon_file)) {
-					require_once $addon_file;
-				} else {
-					//wp_die('Target SEO Plugin Process not found: ' . $fmt);
-                }
+				$this->loadAddon($addon_ctx);
 			}
 
 			if ((!empty($_REQUEST['orbisius_seo_editor_csv_export']) || !empty($_REQUEST['orbisius_seo_editor_csv_export_and_set_defaults']))
@@ -235,6 +231,33 @@ class Orbisius_SEO_Editor_Admin {
                 }
 
                 exit;
+			}
+		}
+	}
+
+	/**
+	 * @param array $ctx
+	 * @return void
+	 */
+	protected function loadAddon($ctx) {
+		$addon_slug = empty($ctx['addon_slug']) ? '' : $ctx['addon_slug'];
+
+		if (empty($addon_slug)) {
+			return;
+		}
+
+		$addon_dirs = [
+			ORBISIUS_SEO_EDITOR_BASE_DIR . '/admin/addons',
+		];
+
+		$addon_dirs = apply_filters('orbisius_seo_editor_filter_addon_dirs', $addon_dirs, $ctx);
+
+		foreach ($addon_dirs as $addon_dir) {
+			$addon_file = "{$addon_dir}/{$addon_slug}.php";
+
+			if (file_exists($addon_file)) {
+				include_once $addon_file;
+				break; // First match wins (PRO dir is first, so PRO takes priority)
 			}
 		}
 	}
