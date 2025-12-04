@@ -156,7 +156,6 @@ if ($is_post) {
                         $filter_options['src_field'],
 	                    $supported_addon_meta_fields
                     );
-                    echo " (&larr; pick one field for better efficiency)";
                     echo "</span> <!-- /orbisius_seo_editor_search_filter_supported_addon_fields_select_wrapper -->";
                     echo "</span> <!-- /orbisius_seo_editor_search_filter_supported_addon_fields_wrapper -->";
                     ?>
