@@ -94,7 +94,8 @@ jQuery(document).ready(function($) {
                     );
                 });
 
-                if (json.data.src_field !== '') { // preselect
+                // Preselect - handles both single value and array
+                if (json.data.src_field !== '' && json.data.src_field.length > 0) {
                     $select_el.val(json.data.src_field);
                 }
             } else {
