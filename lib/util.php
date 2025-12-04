@@ -88,9 +88,18 @@ class Orbisius_SEO_Editor_Util {
 			// if it's empty or an array that means that there wasn't a filter to handle it.
 			if (empty($res_obj) || !is_object($res_obj)) {
 				$work_log[] = sprintf( "Item ID [%d] not processed. Update action not handled by one of our SEO addons. Please contact support with details what you did so we can reproduce it", $id);
-			} else {
-				$work_log[] = sprintf( "Item ID [%d] processed, success: [%s].", $id, $res_obj->isSuccess() ? 'Yes' : 'No');
+				continue;
 			}
+
+			$updated_fields = !empty($res_obj->data['updated_fields']) ? $res_obj->data['updated_fields'] : [];
+
+			if (empty($updated_fields)) {
+				$work_log[] = sprintf( "item id [%d]: no change.", $id);
+				continue;
+			}
+
+			$fields_str = implode(', ', $updated_fields);
+			$work_log[] = sprintf( "item id [%d] updated: [%s].", $id, $fields_str);
 		}
 
 		$status_rec['status'] = $status;

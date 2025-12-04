@@ -109,6 +109,7 @@ class Orbisius_SEO_Editor_Plugin_Addon_Base {
 		}
 
 		$cnt = 0;
+		$updated_fields = [];
 		$res_obj->processed = 1;
 
 		$fields = $this->getMetaMapping();
@@ -134,23 +135,29 @@ class Orbisius_SEO_Editor_Plugin_Addon_Base {
 		}
 
 		foreach ($wanted_meta_fields as $seo_editor_field_id => $target_seo_plugin_meta_key) {
-			if (!empty($post_rec[$seo_editor_field_id])) {
-				$val = wp_strip_all_tags($post_rec[$seo_editor_field_id]);
-				$val = trim($val);
-
-				if (!empty($val)) { // anything left?
-					$res = update_post_meta($post_rec['id'], $target_seo_plugin_meta_key, $val);
-
-					if ($res !== false) {
-						$cnt++;
-					}
-				} elseif (!empty($filters['delete_meta'])) {
-					// @todo do we do this?
-				}
+			if (empty($post_rec[$seo_editor_field_id])) {
+				continue;
 			}
+
+			$val = wp_strip_all_tags($post_rec[$seo_editor_field_id]);
+			$val = trim($val);
+
+			if (empty($val)) {
+				continue;
+			}
+
+			$res = update_post_meta($post_rec['id'], $target_seo_plugin_meta_key, $val);
+
+			if ($res === false) {
+				continue;
+			}
+
+			$cnt++;
+			$updated_fields[] = $seo_editor_field_id;
 		}
 
 		$res_obj->status($cnt > 0);
+		$res_obj->data['updated_fields'] = $updated_fields;
 
 		return $res_obj;
 	}
