@@ -518,6 +518,18 @@ class Orbisius_SEO_Editor_Util {
 		$id = trim($id, '_');
 		$id = sanitize_title($id);
 
+		$is_multiple = stripos($attr, 'multiple') !== false;
+
+		// Add [] to name for multiple select if not already there
+		if ($is_multiple && substr($name, -2) !== '[]') {
+			$name .= '[]';
+		}
+
+		// Ensure $sel is array for multiple select
+		if ($is_multiple && !is_array($sel)) {
+			$sel = empty($sel) ? [] : [$sel];
+		}
+
 		// if the class wasn't passed we'll add it.
 		// What if we want to append id?
 		if (stripos($attr, 'class') === false) {
@@ -532,7 +544,13 @@ class Orbisius_SEO_Editor_Util {
 		foreach ($options as $key => $label) {
 			$key_esc = esc_attr($key);
 			$label_esc = esc_html($label);
-			$selected = $sel == $key ? ' selected="selected"' : '';
+
+			if ($is_multiple) {
+				$selected = in_array($key, $sel) ? ' selected="selected"' : '';
+			} else {
+				$selected = $sel == $key ? ' selected="selected"' : '';
+			}
+
 			$html .= "\t<option value='$key_esc' $selected>$label_esc</option>\n";
 		}
 
