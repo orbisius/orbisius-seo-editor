@@ -72,3 +72,13 @@
 .orbisius_seo_editor_table textarea {
 	min-width: 200px;
 }
+
+.orb_seo_ed_btn_row {
+	text-align: right;
+	margin-bottom: 10px;
+}
+
+.orb_seo_ed_btn_row_bottom {
+	margin-top: 10px;
+	margin-bottom: 0;
+}
