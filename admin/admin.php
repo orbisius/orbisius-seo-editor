@@ -1007,7 +1007,7 @@ class Orbisius_SEO_Editor_Admin {
 
                                     <br/>
                                     <span>
-                                        <a href="<?php echo $product_page_url; ?>" target="_blank" title="[new window]">Product Page</a>
+                                        <a href="<?php echo esc_url($product_page_url); ?>" target="_blank" title="[new window]">Product Page</a>
                                         |
                                         <a href="<?php echo esc_url("https://orbisius.com/forums/forum/community-support-forum/wordpress-plugins/$base_name_slug?utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product");?>"
                                            target="_blank" title="[new window]">Support Forums</a>
@@ -1044,7 +1044,8 @@ class Orbisius_SEO_Editor_Admin {
 												'woocommerce_ver' => defined('WOOCOMMERCE_VERSION') ? WOOCOMMERCE_VERSION : 'n/a',
 											);
 											$hid_data = http_build_query($hidden_data);
-											echo "<input type='hidden' name='data[sys_info]' value='$hid_data' />\n";
+											$hid_data_esc = esc_attr($hid_data);
+											echo "<input type='hidden' name='data[sys_info]' value='$hid_data_esc' />\n";
 											?>
                                             <textarea class="widefat" id='orbisius_seo_editor_msg' name='data[msg]' required="required"></textarea>
                                             <br/>Your Email: <input type="text" class=""
@@ -1064,7 +1065,9 @@ class Orbisius_SEO_Editor_Admin {
 			                                            $val = var_export($val, 1);
 		                                            }
 
-		                                            echo "$key: $val\n";
+		                                            $key_esc = esc_html($key);
+		                                            $val_esc = esc_html($val);
+		                                            echo "$key_esc: $val_esc\n";
 	                                            }
 	                                            ?></textarea>
                                             </div>
@@ -1107,16 +1110,16 @@ class Orbisius_SEO_Editor_Admin {
 
                                     <!-- Twitter: Tweet:js -->
                                     <a href="https://twitter.com/share" class="twitter-share-button"
-                                       data-lang="en" data-text="Checkout <?php echo $product_name;?> #WordPress #plugin.<?php echo $product_descr_short; ?>"
+                                       data-lang="en" data-text="Checkout <?php echo esc_attr($product_name);?> #WordPress #plugin.<?php echo esc_attr($product_descr_short); ?>"
                                        data-count="none" data-via="orbisius" data-related="orbisius"
-                                       data-url="<?php echo $product_page_tweet_link;?>">Tweet</a>
+                                       data-url="<?php echo esc_url($product_page_tweet_link);?>">Tweet</a>
                                     <!-- /Twitter: Tweet:js -->
 
                                     <br/>
                                     <span>
-                                    <a href="<?php echo $product_page_url; ?>" target="_blank" title="[new window]">Product Page</a>
+                                    <a href="<?php echo esc_url($product_page_url); ?>" target="_blank" title="[new window]">Product Page</a>
                                     |
-                                    <a href="https://orbisius.com/forums/forum/community-support-forum/wordpress-plugins/<?php echo $base_name_slug;?>/?utm_source=<?php echo $base_name_slug;?>&utm_medium=plugin-settings&utm_campaign=product"
+                                    <a href="https://orbisius.com/forums/forum/community-support-forum/wordpress-plugins/<?php echo esc_attr($base_name_slug);?>/?utm_source=<?php echo esc_attr($base_name_slug);?>&utm_medium=plugin-settings&utm_campaign=product"
                                        target="_blank" title="[new window]">Support Forums</a>
 
                                         <!-- |

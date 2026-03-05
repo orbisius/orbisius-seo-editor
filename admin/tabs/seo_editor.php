@@ -176,7 +176,7 @@ if ($is_post) {
 
 	<?php if (!empty($status_rec['work_log'])) : ?>
         <div class="updated"><p>
-            <h3>Process Status (Exec time: <?php echo $proces_exec_time;?>s)
+            <h3>Process Status (Exec time: <?php echo esc_html($proces_exec_time);?>s)
                 | <a href='<?php echo esc_url( Orbisius_SEO_Editor_Util::getPageLink('editor')); ?>'
                      class="button">Process New</a>
 
@@ -186,7 +186,7 @@ if ($is_post) {
                     | <a href='<?php echo $status_rec['work_log_txt_file_url']; ?>' class="button000" target="_blank">Text </a>
 				<?php endif; ?>
             </h3>
-            <textarea class="widefat" readonly="readonly" rows="4"><?php echo join("\n", $status_rec['work_log']); ?></textarea>
+            <textarea class="widefat" readonly="readonly" rows="4"><?php echo esc_textarea(join("\n", $status_rec['work_log'])); ?></textarea>
             </p></div>
 	<?php endif; ?>
 
