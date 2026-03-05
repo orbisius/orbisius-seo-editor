@@ -668,8 +668,8 @@ class Orbisius_SEO_Editor_Request {
 
 		if ( headers_sent() ) { // if we encode it twice data won't be transferred.
 			$url = wp_sanitize_redirect($url); // the wp_safe redir does this
-			echo sprintf('<meta http-equiv="refresh" content="0;URL=\'%s\'" />', $url); // jic
-			echo sprintf('<script>window.parent.location="%s";</script>', $url);
+			echo sprintf('<meta http-equiv="refresh" content="0;URL=\'%s\'" />', esc_url($url)); // jic
+			echo sprintf('<script>window.parent.location="%s";</script>', esc_url($url));
 		} elseif ($force & self::REDIRECT_EXTERNAL_SITE) {
 			wp_redirect( $url, 302 );
 		} else {

@@ -448,8 +448,8 @@ class Orbisius_SEO_Editor_Plugin_Manager {
 					return array();
 				}
 
-				$search_esc = esc_sql($search);
-				$where_sql = "meta_key LIKE '$search_esc%'";
+				$search_like = $wpdb->esc_like($search) . '%';
+				$where_sql = $wpdb->prepare("meta_key LIKE %s", $search_like);
 				break;
 
 			default:
@@ -528,16 +528,21 @@ class Orbisius_SEO_Editor_Plugin_Manager {
 			return false;
 		}
 
-		$search_text_esc = esc_sql( $search_text );
-		$replace_text_esc = esc_sql( $replace_text );
-
 		// https://wordpress.stackexchange.com/questions/38592/how-to-replace-post-image-url-before-posting-using-api
 		// https://premium.wpmudev.org/blog/replacing-image-links/
 		// content
-		$replace_sql = "UPDATE $wpdb->posts SET post_content = replace(post_content, '$search_text_esc', '$replace_text_esc')";
+		$replace_sql = $wpdb->prepare(
+			"UPDATE $wpdb->posts SET post_content = replace(post_content, %s, %s)",
+			$search_text,
+			$replace_text
+		);
 
 		// meta featured image
-		$replace_featured_image_sql = "UPDATE $wpdb->postmeta SET meta_value = replace(meta_value, '$search_text_esc', '$replace_text_esc') WHERE meta_key='_wp_attached_file'";
+		$replace_featured_image_sql = $wpdb->prepare(
+			"UPDATE $wpdb->postmeta SET meta_value = replace(meta_value, %s, %s) WHERE meta_key='_wp_attached_file'",
+			$search_text,
+			$replace_text
+		);
 
 		$id = 0;
 		$limit = 0;

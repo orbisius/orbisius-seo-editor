@@ -135,14 +135,24 @@ class Orbisius_SEO_Editor_Plugin_Addon_Base {
 		}
 
 		foreach ($wanted_meta_fields as $seo_editor_field_id => $target_seo_plugin_meta_key) {
-			if (empty($post_rec[$seo_editor_field_id])) {
+			// Field not submitted at all — skip
+			if (!isset($post_rec[$seo_editor_field_id])) {
 				continue;
 			}
 
 			$val = wp_strip_all_tags($post_rec[$seo_editor_field_id]);
 			$val = trim($val);
 
-			if (empty($val)) {
+			// Field was cleared by user — delete the meta
+			if ($val === '') {
+				$had_value = get_post_meta($post_rec['id'], $target_seo_plugin_meta_key, true);
+
+				if ($had_value !== '') {
+					delete_post_meta($post_rec['id'], $target_seo_plugin_meta_key);
+					$cnt++;
+					$updated_fields[] = $seo_editor_field_id;
+				}
+
 				continue;
 			}
 

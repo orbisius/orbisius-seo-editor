@@ -12,10 +12,11 @@ class Orbisius_SEO_Editor_Util {
 
 		$post_status = $post_type == 'attachment' ? 'inherit' : 'publish';
 
-		$post_type = esc_sql($post_type);
-		$post_status = esc_sql($post_status);
-
-		$count = $wpdb->get_var("SELECT COUNT(id) as cnt FROM {$wpdb->posts} WHERE post_type = '$post_type' AND post_status = '$post_status' ");
+		$count = $wpdb->get_var($wpdb->prepare(
+			"SELECT COUNT(id) as cnt FROM {$wpdb->posts} WHERE post_type = %s AND post_status = %s",
+			$post_type,
+			$post_status
+		));
 		$count = empty($count) ? 0 : $count;
 
 		return $count;
@@ -138,11 +139,11 @@ class Orbisius_SEO_Editor_Util {
 		                   . "name='orbisius_seo_editor_csv_export' value='orbisius_seo_editor_csv_export' class='orb_seo_ed_save_button button'>"
 		                   . __('Export (CSV)' ) . "</button>\n</span>";
 
-		$save_changes_btn_html = "<div style='text-align:right;margin-bottom:10px;'><button type='submit' id='save_changes' "
+		$save_changes_btn_html = "<div class='orb_seo_ed_btn_row'><button type='submit' id='save_changes' "
 		                         . "name='save_changes' value='save_changes' class='orb_seo_ed_save_button button-primary'>"
 		                         . __('Save Changes', 'wordpress' ) . "</button>\n | $export_btn_html</div>";
 
-		$save_changes_btn_bottom_html = "<div style='margin-top:10px;margin-bottom:0px;text-align:right;'><button type='submit' id='save_changes' "
+		$save_changes_btn_bottom_html = "<div class='orb_seo_ed_btn_row orb_seo_ed_btn_row_bottom'><button type='submit' id='save_changes' "
 		                                . "name='save_changes' value='save_changes' class='orb_seo_ed_save_button button-primary'>"
 		                                . __('Save Changes', 'wordpress' ) . "</button>\n | $export_btn_html</div>";
 
@@ -453,12 +454,21 @@ class Orbisius_SEO_Editor_Util {
 				}
 			}
 
-			set_time_limit( 15 * 60 );
+			// Only extend time limit for large result sets
+			if ($args['posts_per_page'] > 500 || $args['posts_per_page'] == -1) {
+				set_time_limit( 15 * 60 );
+			}
 
 			$ctx           = [];
 			$ctx           = array_replace_recursive( $ctx, $filters );
 			$args          = apply_filters( 'orbisius_seo_editor_filter_get_items_args', $args, $ctx );
 			$posts_obj_arr = get_posts( $args );
+
+			// Batch-prime the post meta cache in a single query to avoid N+1 queries
+			// when addons call get_post_meta() per field per post.
+			$post_ids_for_cache = wp_list_pluck( $posts_obj_arr, 'ID' );
+			update_meta_cache( 'post', $post_ids_for_cache );
+
 			$desired_cols  = [ 'id', 'title', 'hash', 'post_title', 'post_name', 'post_type', 'meta_title', 'meta_description', ];
 			$desired_cols  = apply_filters( 'orbisius_seo_editor_filter_items_fields', $desired_cols, $ctx );
 			$posts         = [];

@@ -79,11 +79,11 @@ class Orbisius_SEO_Editor_File {
 		?>
 		<div id="orbisius_seo_editor_file_upload_wrapper" class="orbisius_seo_editor_file_upload_wrapper orbisius_seo_editor_upload_form_wrapper">
             <?php if (!empty($title)) : ?>
-			    <p><?php echo $title; ?></p>
+			    <p><?php echo esc_html($title); ?></p>
             <?php endif; ?>
 
             <?php if (!empty($summary)) : ?>
-			    <p><?php echo $summary; ?></p>
+			    <p><?php echo esc_html($summary); ?></p>
             <?php endif; ?>
 
 			<?php do_action('orbisius_seo_editor_action_before_file_upload_form', $ctx); ?>
